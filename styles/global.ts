@@ -10,6 +10,24 @@ const global = css`
     border: 0;
     text-decoration: none;
     font-family: pretendard, sans-serif;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
   }
 `;
 
