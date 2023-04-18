@@ -14,6 +14,7 @@
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "add": "^2.0.6",
     "emotion": "^11.0.0",
     "eslint": "^8.36.0",
     "eslint-config-next": "13.2.4",
@@ -21,6 +22,12 @@
     "prettier": "^2.8.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.2"
+    "react-query": "^3.39.3",
+    "recoil": "^0.7.7",
+    "typescript": "5.0.2",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@types/react-query": "^1.2.9"
   }
 }
