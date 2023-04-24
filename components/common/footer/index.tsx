@@ -23,7 +23,7 @@ const Footer = () => {
             ))}
           </_DeveloperWrapper>
           <_GithubWrapper href="https://github.com/DSM-EH">
-            <_Text>DSM-EH</_Text>
+            <_OrganizationText>DSM-EH</_OrganizationText>
             <Image src={GithubLogo} alt="GithubLogo" width={30} />
           </_GithubWrapper>
         </_RightWrapper>
@@ -66,6 +66,9 @@ const _RightWrapper = styled(_LeftWrapper)`
 
 const _Text = styled.span`
   ${({ theme }) => theme.font.body5};
+`;
+
+const _OrganizationText = styled(_Text)`
   :hover {
     text-decoration: underline;
   }
