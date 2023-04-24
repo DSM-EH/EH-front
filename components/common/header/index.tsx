@@ -5,7 +5,7 @@ import Button from '../button';
 import { useState } from 'react';
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   return (
     <_Wrapper>
@@ -13,7 +13,7 @@ const Header = () => {
         <_LogoImage src={Logo} alt="Logo" />
       </_LeftWrapper>
       <_NavWrapper>
-        <_NavText>그룹 모집</_NavText>
+        <_NavText>운동 그룹</_NavText>
         {isLogin ? (
           <_ProfileWrapper>
             <_ProfileImage src={Logo} alt="Profile" />
