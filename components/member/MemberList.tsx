@@ -4,13 +4,13 @@ import Member from './Member';
 
 const MemberList = (props: MemberListType) => {
   const { title, members }: MemberListType = props;
-  
+
   return (
     <_Wrapper>
       <_Title>{title}</_Title>
       <_MemberWrapper>
         {members.map((member: MemberType) => (
-          <Member key={member.id} user={member} />
+          <Member key={member.id} {...member} />
         ))}
       </_MemberWrapper>
     </_Wrapper>

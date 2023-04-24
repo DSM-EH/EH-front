@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { MemberType } from '@/types/member';
 import Image from 'next/image';
 
-const Member = ({ user }: { user: MemberType }) => {
-  const { id, name, imageUrl } = user;
+const Member = (props: MemberType) => {
+  const { name, imageUrl }: MemberType = props;
   return (
     <_Wrapper>
       <_ProfileImage src={imageUrl} alt={name} width={50} height={50} />
