@@ -21,8 +21,8 @@ const ImageContainer = () => {
 export default ImageContainer;
 
 const _Wrapper = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 100vw;
+  height: 500px;
 `;
 
 const _Image = styled(Image)`
