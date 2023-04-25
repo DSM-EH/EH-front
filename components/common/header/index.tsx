@@ -3,19 +3,20 @@ import { Logo } from '@/assets';
 import Image from 'next/image';
 import Button from '../button';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   return (
     <_Wrapper>
-      <_LeftWrapper>
+      <_LeftWrapper href="/">
         <_LogoImage src={Logo} alt="Logo" />
       </_LeftWrapper>
       <_NavWrapper>
-        <_NavText>운동 그룹</_NavText>
+        <_NavText href="/group">운동 그룹</_NavText>
         {isLogin ? (
-          <_ProfileWrapper>
+          <_ProfileWrapper href="/mypage">
             <_ProfileImage src={Logo} alt="Profile" />
             <_Name>김경호</_Name>
           </_ProfileWrapper>
@@ -44,7 +45,7 @@ const _LogoImage = styled(Image)`
   cursor: pointer;
 `;
 
-const _LeftWrapper = styled.div`
+const _LeftWrapper = styled(Link)`
   width: 40%;
   height: 100%;
   display: flex;
@@ -59,9 +60,11 @@ const _NavWrapper = styled.div`
   align-items: center;
 `;
 
-const _NavText = styled.span`
+const _NavText = styled(Link)`
   ${({ theme }) => theme.font.body3};
   margin-right: 50px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.color.black};
   cursor: pointer;
   :hover {
     text-decoration: underline;
@@ -74,7 +77,7 @@ const _ProfileImage = styled(Image)`
   border-radius: 16px;
 `;
 
-const _ProfileWrapper = styled.div`
+const _ProfileWrapper = styled(Link)`
   display: flex;
   align-items: center;
 `;
