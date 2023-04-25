@@ -28,6 +28,24 @@ const global = css`
         opacity: 0;
       }
     }
+
+    @keyframes sizeup {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes sizedown {
+    0% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
   }
 `;
 
