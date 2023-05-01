@@ -27,7 +27,7 @@ const TextField = ({
           type={type}
           name={name}
           placeholder={inputClick ? '' : placeholder}
-          value={value}
+          value={value === 0 ? '' : value}
           onChange={onChange}
           autoComplete="off"
           onFocus={() => setInputClick(true)}
@@ -48,7 +48,7 @@ const _Wrapper = styled.div<{ width?: number; height?: number }>`
   `}
 `;
 
-const _InputWrapper = styled.div<{ error?: boolean; value?: string }>`
+const _InputWrapper = styled.div<{ error?: boolean; value?: string | number }>`
   width: 100%;
   height: 40px;
   box-sizing: border-box;
