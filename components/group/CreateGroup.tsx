@@ -20,6 +20,13 @@ const CreateGroup = () => {
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = e.target;
+    if (name === 'member') {
+      const numberCheck = /[a-z]|[0-9]/;
+      if ((value != '' && !numberCheck.test(value)) || Number(value) < 0) {
+        alert('숫자만 입력해주세요.');
+        return;
+      }
+    }
     setCreateGroup({ ...createGroup, [name]: value });
   };
 
@@ -65,6 +72,7 @@ const CreateGroup = () => {
         <TextField
           text="모집 인원"
           placeholder="모집 인원 수를 입력해주세요."
+          pattern="[0-9]*"
           onChange={onChange}
           name="member"
           value={createGroup.member}
