@@ -36,7 +36,7 @@ const _TextWrapper = styled.div`
   flex-direction: column;
 `;
 
-const _Text= styled.p`
+const _Text = styled.p`
   ${({ theme }) => theme.font.title1};
   color: ${({ theme }) => theme.color.black};
-`
+`;
