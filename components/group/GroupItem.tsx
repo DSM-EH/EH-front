@@ -59,12 +59,12 @@ const _InformationWrapper = styled.div`
   min-height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const _Title = styled.p`
   ${({ theme }) => theme.font.body3};
   color: ${({ theme }) => theme.color.black};
+  margin-bottom: 15px;
 `;
 
 const _Description = styled.p`

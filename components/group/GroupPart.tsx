@@ -4,6 +4,7 @@ import SearchBar from '@/components/common/searchBar';
 import Button from '../common/button';
 import { GroupItemData, GroupItemType } from '@/utils/constants/group';
 import GroupItem from './GroupItem';
+import Link from 'next/link';
 
 const GroupPart = () => {
   const [search, setSearch] = useState<string>('');
@@ -19,9 +20,11 @@ const GroupPart = () => {
         <SearchBar placeholder="검색어를 입력해주세요" onChange={onChange} value={search} type="text" />
       </_UpperWrapper>
       <_ButtonWrapper>
-        <Button buttonColor="main01" fontColor="main01">
-          그룹 추가
-        </Button>
+        <Link href="/group/create">
+          <Button buttonColor="main01" fontColor="main01">
+            그룹 추가
+          </Button>
+        </Link>
       </_ButtonWrapper>
       <_ListWrapper>
         {GroupItemData.map((element: GroupItemType) => (
