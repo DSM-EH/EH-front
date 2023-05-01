@@ -10,6 +10,7 @@ const Button = ({ children, ...rest }: ButtonPropsType) => {
 export default Button;
 
 const _Button = styled.button<ButtonStyleType>`
+  width: max-content;
   padding: 5px 40px;
   border-radius: 10px;
   ${({ theme }) => theme.font.body3};
