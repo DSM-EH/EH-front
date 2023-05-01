@@ -11,4 +11,5 @@ export interface TextFieldType {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   width?: number;
   height?: number;
+  pattern?: string;
 }

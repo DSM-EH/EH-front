@@ -14,6 +14,7 @@ const TextField = ({
   onChange,
   width,
   height,
+  pattern,
 }: TextFieldType) => {
   const [inputClick, setInputClick] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
@@ -26,6 +27,7 @@ const TextField = ({
           ref={ref}
           type={type}
           name={name}
+          pattern={pattern}
           placeholder={inputClick ? '' : placeholder}
           value={value === 0 ? '' : value}
           onChange={onChange}
