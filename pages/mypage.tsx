@@ -4,10 +4,14 @@ import Profile from '@/components/profile/Profile';
 import styled from '@emotion/styled';
 import ProfileGroupList from '@/components/profile/GroupList';
 import { mypage } from '@/utils/constants/profile';
+import Head from 'next/head';
 
 const Mypage = () => {
   return (
     <Wrapper>
+      <Head>
+        <title>EH 마이페이지</title>
+      </Head>
       <Header />
       <_Wrapper>
         <Profile {...mypage} />
