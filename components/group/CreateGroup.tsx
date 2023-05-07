@@ -18,16 +18,22 @@ const CreateGroup = () => {
     time: '',
   });
 
+  const numberCheck = (value: string) => {
+    const numberRegEx: RegExp = /[a-z]|[0-9]/;
+    if ((value != '' && !numberRegEx.test(value)) || Number(value) < 0) {
+      alert('숫자만 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
+
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = e.target;
+    let numberCheckResult: boolean = true;
     if (name === 'member') {
-      const numberCheck = /[a-z]|[0-9]/;
-      if ((value != '' && !numberCheck.test(value)) || Number(value) < 0) {
-        alert('숫자만 입력해주세요.');
-        return;
-      }
+      numberCheckResult = numberCheck(value);
     }
-    setCreateGroup({ ...createGroup, [name]: value });
+    if (numberCheckResult) setCreateGroup({ ...createGroup, [name]: value });
   };
 
   return (
