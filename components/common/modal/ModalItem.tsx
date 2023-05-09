@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
-import { ReactNode, MouseEvent } from 'react';
+import { ReactNode, HTMLAttributes } from 'react';
 
-interface PropsType {
+interface PropsType extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  height: number;
+  height?: number;
 }
 
-const ModalItem = ({ children, height }: PropsType) => {
-  const onClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-  };
+const ModalItem = ({ children, height, ...rest }: PropsType) => {
   return (
-    <_Wrapper onClick={onClick} height={height}>
+    <_Wrapper {...rest} height={height}>
       {children}
     </_Wrapper>
   );
@@ -19,7 +16,7 @@ const ModalItem = ({ children, height }: PropsType) => {
 
 export default ModalItem;
 
-const _Wrapper = styled.div<{ height: number }>`
+const _Wrapper = styled.div<{ height?: number }>`
   width: 650px;
   height: ${({ height = 320 }) => height}px;
   background-color: ${({ theme }) => theme.color.background};
