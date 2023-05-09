@@ -4,9 +4,13 @@ import Image from 'next/image';
 import Button from '../button';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRecoilState } from 'recoil';
+import { modalState } from '@/utils/atoms/atom';
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
+  const onClick = () => {};
 
   return (
     <_Wrapper>
@@ -21,7 +25,7 @@ const Header = () => {
             <_Name>김경호</_Name>
           </_ProfileWrapper>
         ) : (
-          <Button buttonColor="main01" fontColor="main01">
+          <Button onClick={onClick} buttonColor="main01" fontColor="main01">
             로그인
           </Button>
         )}
@@ -50,6 +54,7 @@ const _LeftWrapper = styled(Link)`
   height: 100%;
   display: flex;
   align-items: center;
+  cursor: default;
 `;
 
 const _NavWrapper = styled.div`
