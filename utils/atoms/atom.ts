@@ -1,6 +1,16 @@
-import { atom } from 'recoil';
+import { SerializableParam, atomFamily } from 'recoil';
 
-export const a = atom({
-  key: '',
-  default: '',
+export interface ModalAtomFamilyType {
+  id: SerializableParam;
+  isOpen: boolean;
+  title: string;
+}
+
+export const modalsAtomFamily = atomFamily<ModalAtomFamilyType, SerializableParam>({
+  key: 'modalsAtomFamily',
+  default: (id: SerializableParam) => ({
+    id,
+    isOpen: false,
+    title: '',
+  }),
 });
