@@ -4,13 +4,11 @@ import Image from 'next/image';
 import Button from '../button';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
-import { modalState } from '@/utils/atoms/atom';
+import { useModal } from '@/hooks/useModal';
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-
-  const onClick = () => {};
+  const { openModal } = useModal('Login');
 
   return (
     <_Wrapper>
@@ -25,7 +23,7 @@ const Header = () => {
             <_Name>김경호</_Name>
           </_ProfileWrapper>
         ) : (
-          <Button onClick={onClick} buttonColor="main01" fontColor="main01">
+          <Button onClick={openModal} buttonColor="main01" fontColor="main01">
             로그인
           </Button>
         )}
