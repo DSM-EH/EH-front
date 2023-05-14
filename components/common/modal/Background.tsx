@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useModal } from '@/hooks/useModal';
 
 interface PropsType {
@@ -8,8 +8,12 @@ interface PropsType {
 }
 
 const ModalBackground = ({ children, modalName }: PropsType) => {
-  const { closeModal } = useModal(modalName);
-  
+  const { modal, closeModal } = useModal(modalName);
+
+  useEffect(() => {
+    document.body.style.overflow = modal.isOpen ? 'hidden' : 'unset';
+  }, [modal]);
+
   return <_Wrapper onClick={closeModal}>{children}</_Wrapper>;
 };
 
