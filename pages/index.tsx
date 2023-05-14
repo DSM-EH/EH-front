@@ -5,14 +5,10 @@ import ImageContainer from '@/components/main/ImageContainer';
 import IntroduceContainer from '@/components/main/Introduce';
 import { Main01, Main02 } from '@/assets';
 import styled from '@emotion/styled';
-import { useModal } from '@/hooks/useModal';
-import LoginModal from '@/components/common/modal/Login';
 
 const Home = () => {
-  const { modal } = useModal('Login');
   return (
     <_Wrapper>
-      {modal.isOpen && <LoginModal />}
       <Head>
         <title>EH</title>
       </Head>
