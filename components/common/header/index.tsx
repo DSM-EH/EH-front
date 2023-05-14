@@ -2,33 +2,37 @@ import styled from '@emotion/styled';
 import { Logo } from '@/assets';
 import Image from 'next/image';
 import Button from '../button';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import Link from 'next/link';
 import { useModal } from '@/hooks/useModal';
+import LoginModal from '../modal/Login';
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const { openModal } = useModal('Login');
+  const { modal, openModal } = useModal('Login');
 
   return (
-    <_Wrapper>
-      <_LeftWrapper href="/">
-        <_LogoImage src={Logo} alt="Logo" />
-      </_LeftWrapper>
-      <_NavWrapper>
-        <_NavText href="/group">운동 그룹</_NavText>
-        {isLogin ? (
-          <_ProfileWrapper href="/mypage">
-            <_ProfileImage src={Logo} alt="Profile" />
-            <_Name>김경호</_Name>
-          </_ProfileWrapper>
-        ) : (
-          <Button onClick={openModal} buttonColor="main01" fontColor="main01">
-            로그인
-          </Button>
-        )}
-      </_NavWrapper>
-    </_Wrapper>
+    <Fragment>
+      {modal.isOpen && <LoginModal />}
+      <_Wrapper>
+        <_LeftWrapper href="/">
+          <_LogoImage src={Logo} alt="Logo" />
+        </_LeftWrapper>
+        <_NavWrapper>
+          <_NavText href="/group">운동 그룹</_NavText>
+          {isLogin ? (
+            <_ProfileWrapper href="/mypage">
+              <_ProfileImage src={Logo} alt="Profile" />
+              <_Name>김경호</_Name>
+            </_ProfileWrapper>
+          ) : (
+            <Button onClick={openModal} buttonColor="main01" fontColor="main01">
+              로그인
+            </Button>
+          )}
+        </_NavWrapper>
+      </_Wrapper>
+    </Fragment>
   );
 };
 
