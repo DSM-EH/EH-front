@@ -21,4 +21,9 @@ const _Wrapper = styled.div<{ height?: number }>`
   height: ${({ height = 320 }) => height}px;
   background-color: ${({ theme }) => theme.color.background};
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  justify-content: space-between;
 `;
