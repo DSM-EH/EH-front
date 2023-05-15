@@ -45,8 +45,8 @@ export default TextField;
 
 const _Wrapper = styled.div<{ width?: number; height?: number }>`
   ${({ width = 554, height = 40 }) => css`
-    width: ${width <= 100 ? `${width}%` : `${width}px`};
-    height: ${height <= 100 ? `${height}%` : `${height}px`};
+    width: ${width <= 100 ? `${width}px` : `${width}px`};
+    height: ${height <= 100 ? `${height}px` : `${height}px`};
   `}
 `;
 
@@ -69,11 +69,10 @@ const _Input = styled.input`
   height: 28px;
   background: transparent;
   color: ${({ theme }) => theme.color.gray900};
-  ${({ theme }) => theme.font.body2};
+  ${({ theme }) => theme.font.body4};
   line-height: 32px;
   ::placeholder {
     color: ${({ theme }) => theme.color.gray300};
-    ${({ theme }) => theme.font.body2};
     line-height: 32px;
   }
 `;
