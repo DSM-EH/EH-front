@@ -34,6 +34,7 @@ const _Wrapper = styled.section<{ reverse: boolean }>`
 const _TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 `;
 
 const _Text = styled.p`
