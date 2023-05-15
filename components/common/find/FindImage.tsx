@@ -10,7 +10,7 @@ interface UploadType {
 }
 
 interface PropsType {
-  name: 'imageUrl' | 'groupBackgroundImageUrl' | 'posterImageUrl';
+  name: 'imageUrl' | 'groupBackgroundImageUrl' | 'posterImageUrl' | 'profileImageUrl';
   height?: number;
 }
 
