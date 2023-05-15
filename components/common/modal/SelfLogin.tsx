@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { LoginType } from '@/types/login';
 import { useState } from 'react';
 import { Logo } from '@/assets';
