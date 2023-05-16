@@ -4,5 +4,5 @@ export interface ProfileType{
     imageUrl: string | StaticImageData;
     name: string;
     introduce: string;
-    myprofile: boolean;
+    myProfile: boolean;
 }
