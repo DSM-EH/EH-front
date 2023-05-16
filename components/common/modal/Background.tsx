@@ -1,16 +1,14 @@
 import styled from '@emotion/styled';
-import { ReactNode } from 'react';
-import { useModal } from '@/hooks/useModal';
+import { HTMLAttributes, ReactNode } from 'react';
 
-interface PropsType {
+interface PropsType extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   modalName: string;
 }
 
-const ModalBackground = ({ children, modalName }: PropsType) => {
-  const { closeModal } = useModal(modalName);
+const ModalBackground = ({ children, modalName, ...rest }: PropsType) => {
 
-  return <_Wrapper onClick={closeModal}>{children}</_Wrapper>;
+  return <_Wrapper {...rest}>{children}</_Wrapper>;
 };
 
 export default ModalBackground;

@@ -4,18 +4,34 @@ import { MouseEvent, useState } from 'react';
 import MainLogin from './MainLogin';
 import SelfLogin from './SelfLogin';
 import SignUp from './SignUp';
+import { useModal } from '@/hooks/useModal';
 
 const LoginModal = () => {
-  const [modal, setModal] = useState<string>('MainModal');
+  const [modalState, setModalState] = useState<string>('MainModal');
+  const { modal, closeModal } = useModal('Login');
+  const [visible, setVisible] = useState<boolean>(modal.isOpen);
 
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
+  const backgroundOnClick = () => {
+    setVisible(false);
+    setTimeout(() => {
+      closeModal();
+    }, 200);
+  };
+
   return (
-    <ModalBackground modalName="Login">
-      <ModalItem onClick={onClick} height={modal === 'SignUp' ? 800 : 500}>
-        {modal === 'SelfModal' ? <SelfLogin /> : modal === 'MainModal' ? <MainLogin setModal={setModal} /> : <SignUp />}
+    <ModalBackground modalName="Login" onClick={backgroundOnClick}>
+      <ModalItem modal={visible} onClick={onClick} height={modalState === 'SignUp' ? 800 : 500}>
+        {modalState === 'SelfModal' ? (
+          <SelfLogin />
+        ) : modalState === 'MainModal' ? (
+          <MainLogin setModalState={setModalState} />
+        ) : (
+          <SignUp />
+        )}
       </ModalItem>
     </ModalBackground>
   );
