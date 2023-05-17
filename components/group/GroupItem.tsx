@@ -11,8 +11,9 @@ interface PropsType {
 }
 
 const GroupItem = ({ title, description, imageUrl, nowMember, maxMember }: PropsType) => {
+  const groupLinkHref: string = `/group/${title.split(' ').join('-')}`;
   return (
-    <_Wrapper href={`/group/${title.split(' ').join('-')}`}>
+    <_Wrapper href={groupLinkHref}>
       <_Image src={imageUrl} alt={title} />
       <_InnerWrapper>
         <_InformationWrapper>
