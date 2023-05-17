@@ -4,12 +4,12 @@ import Image from 'next/image';
 import LoginButton from '@/components/login/Button';
 
 interface PropsType {
-  setModal: (modal: string) => void;
+  setModalState: (modal: string) => void;
 }
 
-const MainLogin = ({ setModal }: PropsType) => {
+const MainLogin = ({ setModalState }: PropsType) => {
   const onClick = (modalName: string) => {
-    setModal(modalName);
+    setModalState(modalName);
   };
 
   return (
@@ -17,10 +17,10 @@ const MainLogin = ({ setModal }: PropsType) => {
       <Image src={Logo} alt="EH" width={75} />
       <_ButtonWrapper>
         <LoginButton text="Google로 계속하기" imageUrl={GoogleLogo} />
-        <LoginButton onClick={() => onClick("SelfModal")} text="다른 이메일로 로그인하기" />
+        <LoginButton onClick={() => onClick('SelfModal')} text="다른 이메일로 로그인하기" />
       </_ButtonWrapper>
       <_Text>
-        아직 회원이 아니신가요? <_SignUpText onClick={() => onClick("SignUp")}>회원가입</_SignUpText>
+        아직 회원이 아니신가요? <_SignUpText onClick={() => onClick('SignUp')}>회원가입</_SignUpText>
       </_Text>
     </_Wrapper>
   );
