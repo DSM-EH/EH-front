@@ -12,15 +12,17 @@ interface PropsType {
 }
 
 const ProfileInit = ({ setSignUpInformation }: PropsType) => {
-    const { closeModal } = useModal('Login');
+  const { closeModal } = useModal('Login');
 
   return (
     <>
       <Image src={Logo} alt="Logo" />
       <_Wrapper>
         <_Title>프로필 사진</_Title>
-        <FindImage height={300} name="profileImageUrl"/>
-        <Button onClick={closeModal} buttonColor='main01' fontColor='main01'>회원가입</Button>
+        <FindImage height={300} name="profileImageUrl" />
+        <Button onClick={closeModal} buttonColor="main01" fontColor="main01">
+          회원가입
+        </Button>
       </_Wrapper>
     </>
   );
@@ -41,4 +43,3 @@ const _Title = styled.p`
   ${({ theme }) => theme.font.title3};
   color: ${({ theme }) => theme.color.black};
 `;
-
