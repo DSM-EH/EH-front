@@ -3,16 +3,20 @@ import { ProfileType } from '@/types/profile';
 import Image from 'next/image';
 import Button from '../common/button';
 
-const Profile = (props: ProfileType) => {
-  const { name, imageUrl, introduce, myprofile } = props;
+const Profile = ({name, imageUrl, introduce, myProfile}: ProfileType) => {
+
+
+  const onClick = () => {
+    
+  }
 
   return (
     <_Wrapper>
       <_Image src={imageUrl} alt="name" />
       <_Name>{name}</_Name>
       <_Introduce>{introduce}</_Introduce>
-      {myprofile && (
-        <Button buttonColor="main01" fontColor="main01">
+      {myProfile && (
+        <Button onClick={onClick} buttonColor="main01" fontColor="main01">
           수정
         </Button>
       )}
