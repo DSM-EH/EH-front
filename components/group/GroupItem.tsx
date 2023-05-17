@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from 'next/image';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 interface PropsType {
   title: string;
@@ -11,7 +12,7 @@ interface PropsType {
 
 const GroupItem = ({ title, description, imageUrl, nowMember, maxMember }: PropsType) => {
   return (
-    <_Wrapper>
+    <_Wrapper href={`/group/${title.split(' ').join('-')}`}>
       <_Image src={imageUrl} alt={title} />
       <_InnerWrapper>
         <_InformationWrapper>
@@ -30,7 +31,7 @@ const GroupItem = ({ title, description, imageUrl, nowMember, maxMember }: Props
 
 export default GroupItem;
 
-const _Wrapper = styled.div`
+const _Wrapper = styled(Link)`
   width: 500px;
   height: 25rem;
   display: flex;
@@ -42,6 +43,8 @@ const _Wrapper = styled.div`
   z-index: 1;
   margin-bottom: 35px;
   animation: sizedown 0.4s;
+  text-decoration: none;
+  color: ${({ theme }) => theme.color.black};
   cursor: pointer;
   :hover {
     animation: sizeup 0.4s;
