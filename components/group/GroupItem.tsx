@@ -1,6 +1,7 @@
 import Image, { StaticImageData } from 'next/image';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import transitions from '@/lib/styles/transitions';
 
 interface PropsType {
   title: string;
@@ -43,12 +44,12 @@ const _Wrapper = styled(Link)`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   z-index: 1;
   margin-bottom: 35px;
-  animation: sizedown 0.4s;
+  animation: ${transitions.sizedown} 0.4s;
   text-decoration: none;
   color: ${({ theme }) => theme.color.black};
   cursor: pointer;
   :hover {
-    animation: sizeup 0.4s;
+    animation: ${transitions.sizeup} 0.4s;
     animation-fill-mode: forwards;
   }
 `;
