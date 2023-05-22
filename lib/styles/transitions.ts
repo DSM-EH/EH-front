@@ -1,5 +1,41 @@
 import { keyframes } from '@emotion/react';
 
+const fadeIn = keyframes`
+from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+const sizeup = keyframes`
+0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+`;
+
+const sizedown = keyframes`
+  0% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
 const popInFromBottom = keyframes`
   0% {
     opacity: 0;
@@ -36,6 +72,10 @@ const popIn = keyframes`
 `;
 
 const transitions = {
+  fadeIn,
+  fadeOut,
+  sizeup,
+  sizedown,
   popInFromBottom,
   popOutToBottom,
   popIn,
