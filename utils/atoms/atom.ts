@@ -1,4 +1,4 @@
-import { SerializableParam, atomFamily } from 'recoil';
+import { RecoilState, SerializableParam, atom, atomFamily } from 'recoil';
 
 export interface ModalAtomFamilyType {
   id: SerializableParam;
@@ -6,11 +6,19 @@ export interface ModalAtomFamilyType {
   title: string;
 }
 
-export const modalsAtomFamily = atomFamily<ModalAtomFamilyType, SerializableParam>({
+export const modalsAtomFamily: (param: SerializableParam) => RecoilState<ModalAtomFamilyType> = atomFamily<
+  ModalAtomFamilyType,
+  SerializableParam
+>({
   key: 'modalsAtomFamily',
   default: (id: SerializableParam) => ({
     id,
     isOpen: false,
     title: '',
   }),
+});
+
+export const skeletonAtom: RecoilState<boolean> = atom<boolean>({
+  key: 'skeletonAtom',
+  default: false,
 });
