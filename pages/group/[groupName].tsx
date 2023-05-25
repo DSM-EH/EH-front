@@ -1,21 +1,21 @@
+import Head from 'next/head';
+import Image from 'next/image';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
+import { useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import Header from '@/components/common/header';
-import Head from 'next/head';
-import { Introduce, Option } from '@/assets';
-import Image from 'next/image';
 import Button from '@/components/common/button';
-import { copyClipBoardOnClick } from '@/utils/functions/copyClipBoard';
-import { useState, useEffect, MouseEvent } from 'react';
-import { css } from '@emotion/react';
-import skeleton from '@/lib/styles/skeleton';
 import GroupMemberList from '@/components/profile/GroupMemberList';
 import PromotionList from '@/components/promotion/PromotionList';
+import { copyClipBoardOnClick } from '@/utils/functions/copyClipBoard';
+import { Introduce, Option } from '@/assets';
+import skeleton from '@/lib/styles/skeleton';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
-  const { groupName } = router.query;
+  const { groupName } = router.query as { groupName: string };
 
   useEffect(() => {
     const timer: NodeJS.Timeout = setTimeout(() => {
@@ -83,7 +83,7 @@ const GroupIdPage = () => {
       </_UpperWrapper>
       <_MainWrapper>
         <GroupMemberList isLoading={isLoading} title="그룹 멤버 💪🏻" />
-        <PromotionList />
+        <PromotionList isLoading={isLoading} />
       </_MainWrapper>
     </div>
   );
