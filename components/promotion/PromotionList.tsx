@@ -2,12 +2,18 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import Promotion from './Promotion';
 import { promotion } from '@/utils/constants/promotion';
+import { communication } from '@/utils/constants/data';
+import CommunicationItem from './CommunicationItem';
 
 interface ListType {
   [key: string]: boolean;
 }
 
-const PromotionList = () => {
+interface PropsType {
+  isLoading: boolean;
+}
+
+const PromotionList = ({ isLoading }: PropsType) => {
   const [list, setList] = useState<ListType>({
     전체: true,
     소통: false,
@@ -33,7 +39,18 @@ const PromotionList = () => {
           </_Text>
         ))}
       </_TextWrapper>
-      {list['전체'] ? <Promotion {...promotion} /> : list['홍보'] && <Promotion {...promotion} />}
+      {list['전체'] ? (
+        <>
+          <Promotion isLoading={isLoading} {...promotion} />
+          {communication.map(element => (
+            <CommunicationItem key={element.id} {...element} />
+          ))}
+        </>
+      ) : list['홍보'] ? (
+        <Promotion isLoading={isLoading} {...promotion} />
+      ) : (
+        communication.map(element => <CommunicationItem key={element.id} {...element} />)
+      )}
     </_Wrapper>
   );
 };

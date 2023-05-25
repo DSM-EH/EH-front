@@ -1,3 +1,4 @@
+import skeleton from '@/lib/styles/skeleton';
 import styled from '@emotion/styled';
 import Image, { StaticImageData } from 'next/image';
 import { useState, useEffect } from 'react';
@@ -8,39 +9,34 @@ interface PropsType {
   recruitmentMember: number;
   gatheringTime: string;
   imageUrl: string | StaticImageData;
+  isLoading: boolean;
 }
 
-const Promotion = ({ title, contents, recruitmentMember, gatheringTime, imageUrl }: PropsType) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const timer: NodeJS.Timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  });
-
+const Promotion = ({ title, contents, recruitmentMember, gatheringTime, imageUrl, isLoading }: PropsType) => {
   return (
     <_Wrapper>
-      <_Title>{title}</_Title>
+      {isLoading ? <_SkeletonText /> : <_Title>{title}</_Title>}
       <_ContentsWrapper>
-        {contents.split('\n').map((line: string, index: number) => (
-          <span key={index}>
-            {line}
-            <br />
-          </span>
-        ))}
+        {contents.split('\n').map((line: string, index: number) =>
+          isLoading ? (
+            <_SkeletonText />
+          ) : (
+            <span key={index}>
+              {line}
+              <br />
+            </span>
+          ),
+        )}
       </_ContentsWrapper>
       <_SmallTitleWrapper>
         <_SmallTitle>모집인원</_SmallTitle>
-        <_SmallContents>{recruitmentMember}명</_SmallContents>
+        {isLoading ? <_SkeletonText /> : <_SmallContents>{recruitmentMember}명</_SmallContents>}
       </_SmallTitleWrapper>
       <_SmallTitleWrapper>
         <_SmallTitle>모집 시간</_SmallTitle>
-        <_SmallContents>{gatheringTime}</_SmallContents>
+        {isLoading ? <_SkeletonText /> : <_SmallContents>{gatheringTime}</_SmallContents>}
       </_SmallTitleWrapper>
-      <_Image src={imageUrl} alt={title} />
+      {isLoading ? <_SkeletonImage /> : <_Image src={imageUrl} alt={title} />}
     </_Wrapper>
   );
 };
@@ -52,6 +48,15 @@ const _Wrapper = styled.div`
   padding: 30px 40px;
   background-color: ${({ theme }) => theme.color.gray100};
   border-radius: 10px;
+  margin-bottom: 30px;
+`;
+
+const _SkeletonText = styled.div`
+  width: 100%;
+  height: 30px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
 `;
 
 const _Title = styled.strong`
@@ -88,4 +93,12 @@ const _SmallContents = styled.span`
 const _Image = styled(Image)`
   width: 100%;
   margin-top: 30px;
+`;
+
+const _SkeletonImage = styled.div`
+  width: 100%;
+  height: 500px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
 `;
