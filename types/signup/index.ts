@@ -5,5 +5,13 @@ export interface SignUpType {
   email: string;
   password: string;
   passwordConfirmation: string;
-  profileImageUrl: string | StaticImageData;
+  profileImageUrl: string;
+}
+
+export interface SignUpApiType {
+  nickname: string;
+  email: string;
+  password: string;
+  description: string;
+  profile_image_url: string;
 }
