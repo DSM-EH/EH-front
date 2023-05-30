@@ -2,13 +2,17 @@ import styled from '@emotion/styled';
 import { ProfileType } from '@/types/profile';
 import Image from 'next/image';
 import Button from '../common/button';
+import { deleteCookie } from '@/utils/cookie/cookie';
 
-const Profile = ({name, imageUrl, introduce, myProfile}: ProfileType) => {
+const Profile = ({ name, imageUrl, introduce, myProfile }: ProfileType) => {
+  const onClick = () => {};
 
-
-  const onClick = () => {
-    
-  }
+  const logOutOnClick = () => {
+    deleteCookie('access_token');
+    deleteCookie('refresh_token');
+    localStorage.removeItem('email');
+    window.location.href = '/';
+  };
 
   return (
     <_Wrapper>
@@ -16,9 +20,14 @@ const Profile = ({name, imageUrl, introduce, myProfile}: ProfileType) => {
       <_Name>{name}</_Name>
       <_Introduce>{introduce}</_Introduce>
       {myProfile && (
-        <Button onClick={onClick} buttonColor="main01" fontColor="main01">
-          수정
-        </Button>
+        <>
+          <Button onClick={onClick} buttonColor="main01" fontColor="main01">
+            수정
+          </Button>
+          <Button onClick={logOutOnClick} buttonColor="main01" fontColor="main01" style={{ marginTop: '20px' }}>
+            로그아웃
+          </Button>
+        </>
       )}
     </_Wrapper>
   );
