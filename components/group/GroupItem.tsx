@@ -2,29 +2,25 @@ import Image, { StaticImageData } from 'next/image';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import transitions from '@/lib/styles/transitions';
+import { GroupType } from '@/types/group';
 
-interface PropsType {
-  title: string;
-  description: string;
-  imageUrl: string | StaticImageData;
-  nowMember: number;
-  maxMember: number;
-}
-
-const GroupItem = ({ title, description, imageUrl, nowMember, maxMember }: PropsType) => {
+const GroupItem = ({ id, title, background_image, description, max_people }: GroupType) => {
   const groupLinkHref: string = `/group/${title.split(' ').join('-')}`;
+
+  const onClick = () => {
+    localStorage.setItem('groupId', id.toString());
+  };
+
   return (
-    <_Wrapper href={groupLinkHref}>
-      <_Image src={imageUrl} alt={title} />
+    <_Wrapper onClick={onClick} href={groupLinkHref}>
+      <_Image width={500} height={150} src={background_image} alt={title} />
       <_InnerWrapper>
         <_InformationWrapper>
           <_Title>{title}</_Title>
           <_Description>{description}</_Description>
         </_InformationWrapper>
         <_MemberWrapper>
-          <_MemberCount>
-            {nowMember} / {maxMember} 명
-          </_MemberCount>
+          <_MemberCount>{max_people} 명</_MemberCount>
         </_MemberWrapper>
       </_InnerWrapper>
     </_Wrapper>
@@ -44,6 +40,7 @@ const _Wrapper = styled(Link)`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   z-index: 1;
   margin-bottom: 35px;
+  margin-right: 50px;
   animation: ${transitions.sizedown} 0.4s;
   text-decoration: none;
   color: ${({ theme }) => theme.color.black};
@@ -54,9 +51,7 @@ const _Wrapper = styled(Link)`
   }
 `;
 
-const _Image = styled(Image)`
-  width: 100%;
-  height: 9.375rem;
+const _Image = styled.img`
   border-radius: 0.5rem 0.5rem 0px 0px;
 `;
 
