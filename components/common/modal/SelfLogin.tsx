@@ -4,6 +4,9 @@ import { Logo } from '@/assets';
 import Image from 'next/image';
 import TextField from '../textfield';
 import Button from '../button';
+import { postSignIn } from '@/apis/signIn';
+import { customToast } from '@/utils/toast/toast';
+import { setCookie } from '@/utils/cookie/cookie';
 
 const SelfLogin = () => {
   const [loginInformation, setLoginInformation] = useState<LoginType>({
@@ -17,6 +20,21 @@ const SelfLogin = () => {
       ...loginInformation,
       [name]: value,
     });
+  };
+
+  const onClick = () => {
+    postSignIn(loginInformation)
+      .then(res => {
+        setCookie('access_token', res.data.access_token);
+        setCookie('refresh_token', res.data.refresh_token);
+        window.localStorage.setItem('email', loginInformation.email);
+        window.location.reload();
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+        window.localStorage.setItem('email', loginInformation.email);
+        window.location.reload();
+      });
   };
 
   return (
@@ -39,7 +57,7 @@ const SelfLogin = () => {
         text="비밀번호"
         type="password"
       />
-      <Button buttonColor="main01" fontColor="main01">
+      <Button onClick={onClick} buttonColor="main01" fontColor="main01">
         로그인
       </Button>
     </>
