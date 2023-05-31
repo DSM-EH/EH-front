@@ -12,23 +12,12 @@ interface UploadType {
 interface PropsType {
   name: 'imageUrl' | 'groupBackgroundImageUrl' | 'posterImageUrl' | 'profileImageUrl';
   height?: number;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FindImage = ({ name, height }: PropsType) => {
+const FindImage = ({ name, height, onChange }: PropsType) => {
   const [image, setImage] = useState<UploadType>();
   const imageRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileList: FileList | null = e.target.files;
-    if (fileList && fileList[0]) {
-      const url: string = URL.createObjectURL(fileList[0]);
-      setImage({
-        file: fileList[0],
-        thumbnail: url,
-        type: fileList[0].type.slice(0, 5),
-      });
-    }
-  };
 
   const showImage = useMemo(() => {
     if (!image && image === undefined) {
@@ -45,7 +34,7 @@ const FindImage = ({ name, height }: PropsType) => {
   return (
     <_Wrapper height={height} onClick={() => imageRef.current?.click()}>
       {showImage}
-      <_FileSelector ref={imageRef} type="file" accept="image/*" onChange={onChange} />
+      <_FileSelector ref={imageRef} type="file" accept="image/*" onChange={(e) => { onChange(e); }} />
     </_Wrapper>
   );
 };
