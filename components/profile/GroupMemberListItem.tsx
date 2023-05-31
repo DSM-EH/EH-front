@@ -3,12 +3,16 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface PropsType {
-  profile: string;
-  name: string;
+  id: number;
+  email: string;
+  password: string;
+  nickname: string;
+  description: string;
+  profile_image_url: string;
   isLoading: boolean;
 }
 
-const GroupMemberListItem = ({ profile, name, isLoading }: PropsType) => {
+const GroupMemberListItem = ({ profile_image_url, nickname, isLoading }: PropsType) => {
   return (
     <_Wrapper>
       {isLoading ? (
@@ -18,8 +22,8 @@ const GroupMemberListItem = ({ profile, name, isLoading }: PropsType) => {
         </>
       ) : (
         <>
-          <_ProfileImage src={profile} alt={name} />
-          <_Name>{name}</_Name>
+          <_ProfileImage src={profile_image_url} alt={nickname} />
+          <_Name>{nickname}</_Name>
         </>
       )}
     </_Wrapper>
