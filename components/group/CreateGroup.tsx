@@ -5,35 +5,70 @@ import { CreateGroupType } from '@/types/group';
 import FindImage from '../common/find/FindImage';
 import Textarea from '../common/textarea';
 import Button from '../common/button';
+import { createGroupApi } from '@/apis/createGroup';
+import { customToast } from '@/utils/toast/toast';
 
 const CreateGroup = () => {
   const [createGroup, setCreateGroup] = useState<CreateGroupType>({
     title: '',
-    imageUrl: '',
+    imageUrl: 'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
     introduce: '',
-    groupBackgroundImageUrl: '',
+    groupBackgroundImageUrl:
+      'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
     contents: '',
-    posterImageUrl: '',
+    posterImageUrl:
+      'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
     member: 0,
     time: '',
   });
 
   const numberCheck = (value: string) => {
     const numberRegEx: RegExp = /[a-z]|[0-9]/;
+
     if ((value != '' && !numberRegEx.test(value)) || Number(value) < 0) {
-      alert('숫자만 입력해주세요.');
+      alert('숫자를 제대로 입력해주세요.');
       return false;
     }
+
     return true;
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = e.target;
     let numberCheckResult: boolean = true;
+
     if (name === 'member') {
       numberCheckResult = numberCheck(value);
     }
     if (numberCheckResult) setCreateGroup({ ...createGroup, [name]: value });
+  };
+
+  const onClick = () => {
+    const email = localStorage.getItem('email');
+    const date = new Date();
+
+    if (!email) {
+      customToast('로그인이 필요합니다.', 'error');
+      return;
+    }
+
+    createGroupApi({
+      email: email,
+      title: createGroup.title,
+      profile_image: createGroup.imageUrl,
+      background_image: createGroup.groupBackgroundImageUrl,
+      poster_image: createGroup.posterImageUrl,
+      description: createGroup.introduce,
+      set_time: date,
+      max_people: createGroup.member,
+    })
+      .then(res => {
+        console.log(res);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+        customToast('개발자 에러', 'error');
+      });
   };
 
   return (
@@ -49,7 +84,7 @@ const CreateGroup = () => {
       />
       <_ImageInputWrapper>
         <_SmallTitle>그룹 이미지</_SmallTitle>
-        <FindImage name="imageUrl" />
+        <FindImage name="imageUrl" onChange={onChange} />
       </_ImageInputWrapper>
       <TextField
         text="그룹 소개"
@@ -91,11 +126,11 @@ const CreateGroup = () => {
           placeholder="모이는 시간을 입력해주세요."
           onChange={onChange}
           name="time"
-          value={createGroup.title}
+          value={createGroup.time}
           width={100}
         />
       </_ImageInputWrapper>
-      <Button buttonColor="main01" fontColor="main01">
+      <Button onClick={onClick} buttonColor="main01" fontColor="main01">
         그룹 생성
       </Button>
     </_Wrapper>
