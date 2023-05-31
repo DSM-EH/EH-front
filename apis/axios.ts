@@ -6,14 +6,14 @@ const instance = axios.create({
   timeout: 2000,
 });
 
-instance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    config.headers.Authorization = `Bearer ${getCookie('accessToken')}`;
-    return config;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  },
-);
+// instance.interceptors.request.use(
+//   (config: InternalAxiosRequestConfig) => {
+//     config.headers.Authorization = `Bearer ${getCookie('accessToken')}`;
+//     return config;
+//   },
+//   (error: AxiosError) => {
+//     return Promise.reject(error);
+//   },
+// );
 
 export default instance;
