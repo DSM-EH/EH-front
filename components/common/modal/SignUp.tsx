@@ -5,6 +5,7 @@ import Image from 'next/image';
 import TextField from '../textfield';
 import Button from '../button';
 import ProfileInit from './ProfileInit';
+import { customToast } from '@/utils/toast/toast';
 
 const SignUp = () => {
   const [signUpInformation, setSignUpInformation] = useState<SignUpType>({
@@ -17,6 +18,10 @@ const SignUp = () => {
   const [profileModal, setProfileModal] = useState<boolean>(false);
 
   const onClick = () => {
+    if (signUpInformation.password !== signUpInformation.passwordConfirmation) {
+      customToast('비밀번호를 한번 더 확인해주세요.', 'error');
+      return;
+    }
     setProfileModal(true);
   };
 
@@ -28,7 +33,7 @@ const SignUp = () => {
   return (
     <>
       {profileModal ? (
-        <ProfileInit setSignUpInformation={setSignUpInformation}/>
+        <ProfileInit signUpInformation={signUpInformation} setSignUpInformation={setSignUpInformation} />
       ) : (
         <>
           <Image src={Logo} alt="Logo" />
