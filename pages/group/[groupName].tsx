@@ -11,16 +11,57 @@ import PromotionList from '@/components/promotion/PromotionList';
 import { copyClipBoardOnClick } from '@/utils/functions/copyClipBoard';
 import { Introduce, Option } from '@/assets';
 import skeleton from '@/lib/styles/skeleton';
+import { getGroupFindOne } from '@/apis/getGroupFindOne';
+import { customToast } from '@/utils/toast/toast';
+import { GetGroupApiType } from '@/types/group';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
   const { groupName } = router.query as { groupName: string };
+  const [group, setGroup] = useState<GetGroupApiType>({
+    id: 0,
+    title: '',
+    profile_image: '',
+    background_image: '',
+    poster_image: '',
+    description: '',
+    max_people: 0,
+    set_time: new Date(),
+    owner: {
+      id: 0,
+      email: '',
+      nickname: '',
+      profile_image_url: '',
+      description: '',
+      password: '',
+    },
+  });
+
+  const onShowMemberClick = () => {
+    router.push('/group/[groupName]/member', `/group/${groupName}/member`);
+  };
 
   useEffect(() => {
     const timer: NodeJS.Timeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    const id = localStorage.getItem('groupId');
+
+    if (!id) {
+      customToast('잘못된 접근입니다', 'error');
+      return;
+    }
+
+    getGroupFindOne(id)
+      .then(res => {
+        const { data } = res;
+        setGroup(data);
+      })
+      .catch(err => {
+        console.error(err);
+        customToast('개발자 에러', 'error');
+      });
 
     return () => clearTimeout(timer);
   }, []);
@@ -28,7 +69,7 @@ const GroupIdPage = () => {
   return (
     <div>
       <Head>
-        <title>{groupName}</title>
+        <title>{group.title}</title>
       </Head>
       <Header />
       <_ImageWrapper>
@@ -36,7 +77,7 @@ const GroupIdPage = () => {
           <_SkeletonBackgroundImage width={99.9} height={450} />
         ) : (
           <>
-            <_Image src={Introduce} alt="background" />
+            <_Image src={group.background_image} alt="background" />
             <_Filter />
           </>
         )}
@@ -46,7 +87,7 @@ const GroupIdPage = () => {
           {isLoading ? (
             <_SkeletonBackgroundImage width={100} height={100} style={{ marginRight: '20px' }} />
           ) : (
-            <_GroupLogoImage src={Introduce} alt="GroupName" />
+            <_GroupLogoImage src={group.profile_image} alt="GroupName" />
           )}
           <_TextWrapper>
             {isLoading ? (
@@ -56,8 +97,8 @@ const GroupIdPage = () => {
               </>
             ) : (
               <>
-                <_Title>타이틀</_Title>
-                <_IntroduceText>ㅇㄹㅇㄹ알어ㅏㄹ</_IntroduceText>
+                <_Title>{group.title}</_Title>
+                <_IntroduceText>{group.description}</_IntroduceText>
               </>
             )}
           </_TextWrapper>
@@ -82,7 +123,7 @@ const GroupIdPage = () => {
         </_ButtonWrapper>
       </_UpperWrapper>
       <_MainWrapper>
-        <GroupMemberList isLoading={isLoading} title="그룹 멤버 💪🏻" />
+        <GroupMemberList onClick={onShowMemberClick} isLoading={isLoading} title="그룹 멤버 💪🏻" />
         <PromotionList isLoading={isLoading} />
       </_MainWrapper>
     </div>
@@ -91,7 +132,7 @@ const GroupIdPage = () => {
 
 export default GroupIdPage;
 
-const _Image = styled(Image)`
+const _Image = styled.img`
   width: 100vw;
   height: 450px;
   z-index: -1;
@@ -116,7 +157,7 @@ const _UpperWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const _GroupLogoImage = styled(Image)`
+const _GroupLogoImage = styled.img`
   width: 100px;
   height: 100px;
   margin-right: 20px;
