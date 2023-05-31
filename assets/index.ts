@@ -11,3 +11,6 @@ export { default as Expansion } from './image/expansion.svg';
 
 // png
 export { default as Introduce } from './image/introduce.png';
+
+//jpeg
+export { default as DummyData } from './image/dummy image.jpeg';
