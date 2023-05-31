@@ -1,29 +1,59 @@
 import styled from '@emotion/styled';
 import { Logo } from '@/assets';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Button from '../button';
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import { useModal } from '@/hooks/useModal';
 import LoginModal from '../modal/Login';
+import { getCookie } from '@/utils/cookie/cookie';
+import { getProfile } from '@/apis/getProfile';
+import { DummyData } from '@/assets';
+
+interface ProfileType {
+  name: string;
+  profileImageUrl: string | StaticImageData;
+}
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const { modal, openModal } = useModal('Login');
+  const [profile, setProfile] = useState<ProfileType>({
+    name: '',
+    profileImageUrl: '',
+  });
+
+  useEffect(() => {
+    const acccessToken: string = getCookie('accessToken');
+    if (acccessToken) {
+      getProfile()
+        .then(res => {
+          const { data } = res;
+          setIsLogin(true);
+          setProfile({
+            name: '김경호',
+            profileImageUrl: DummyData,
+          });
+        })
+        .catch((error: unknown) => {
+          console.error(error);
+        });
+    }
+  }, []);
 
   return (
     <Fragment>
       {modal.isOpen && <LoginModal />}
       <_Wrapper>
-        <_LeftWrapper href="/">
-          <_LogoImage src={Logo} alt="Logo" />
+        <_LeftWrapper>
+          <_LogoImage onClick={() => (window.location.href = '/')} src={Logo} alt="Logo" />
         </_LeftWrapper>
         <_NavWrapper>
           <_NavText href="/group">운동 그룹</_NavText>
           {isLogin ? (
             <_ProfileWrapper href="/mypage">
-              <_ProfileImage src={Logo} alt="Profile" />
-              <_Name>김경호</_Name>
+              <_ProfileImage width={50} height={50} src={profile.profileImageUrl} alt="Profile" />
+              <_Name>{profile.name}</_Name>
             </_ProfileWrapper>
           ) : (
             <Button onClick={openModal} buttonColor="main01" fontColor="main01">
@@ -51,7 +81,7 @@ const _LogoImage = styled(Image)`
   cursor: pointer;
 `;
 
-const _LeftWrapper = styled(Link)`
+const _LeftWrapper = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
@@ -79,8 +109,6 @@ const _NavText = styled(Link)`
 `;
 
 const _ProfileImage = styled(Image)`
-  width: 50px;
-  height: 50px;
   border-radius: 16px;
 `;
 
