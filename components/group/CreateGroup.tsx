@@ -63,7 +63,15 @@ const CreateGroup = () => {
       max_people: createGroup.member,
     })
       .then(res => {
+        const prev: string | null = sessionStorage.getItem('prevPath');
+
+        if (!prev) {
+          customToast('잘못된 접근입니다.', 'error');
+          return;
+        }
+
         console.log(res);
+        window.location.href = prev;
       })
       .catch((err: unknown) => {
         console.error(err);
