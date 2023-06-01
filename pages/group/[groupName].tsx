@@ -14,11 +14,14 @@ import skeleton from '@/lib/styles/skeleton';
 import { getGroupFindOne } from '@/apis/getGroupFindOne';
 import { customToast } from '@/utils/toast/toast';
 import { GetGroupApiType } from '@/types/group';
+import { useModal } from '@/hooks/useModal';
+import SupportModal from '@/components/common/modal/Support';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
   const { groupName } = router.query as { groupName: string };
+  const { modal, openModal } = useModal('Support');
   const [group, setGroup] = useState<GetGroupApiType>({
     id: 0,
     title: '',
@@ -46,7 +49,7 @@ const GroupIdPage = () => {
     const timer: NodeJS.Timeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    const id = localStorage.getItem('groupId');
+    const id: string | null = localStorage.getItem('groupId');
 
     if (!id) {
       customToast('잘못된 접근입니다', 'error');
@@ -68,6 +71,7 @@ const GroupIdPage = () => {
 
   return (
     <div>
+      {modal.isOpen && <SupportModal />}
       <Head>
         <title>{group.title}</title>
       </Head>
@@ -111,7 +115,7 @@ const GroupIdPage = () => {
             </>
           ) : (
             <>
-              <_Button buttonColor="main01" fontColor="main01">
+              <_Button onClick={openModal} buttonColor="main01" fontColor="main01">
                 지원하기
               </_Button>
               <_Button onClick={copyClipBoardOnClick} buttonColor="main01" fontColor="main01">
