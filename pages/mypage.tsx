@@ -5,8 +5,47 @@ import styled from '@emotion/styled';
 import ProfileGroupList from '@/components/profile/GroupList';
 import { mypage } from '@/utils/constants/profile';
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import { getUserProfile } from '@/apis/getUserProfile';
+import { customToast } from '@/utils/toast/toast';
+import { ProfileApiType } from '@/types/profile';
+import { getMyGroup } from '@/apis/getMyGroup';
 
 const Mypage = () => {
+  const [user, setUser] = useState<ProfileApiType>({
+    id: 0,
+    email: '',
+    password: '',
+    nickname: '',
+    description: '',
+    profile_image_url: '',
+  });
+  useEffect(() => {
+    const email: string | null = localStorage.getItem('email');
+    if (!email) {
+      customToast('잘못된 접근입니다', 'error');
+      return;
+    }
+
+    getUserProfile(email)
+      .then(res => {
+        console.log("유저가 있네");
+        setUser(res.data);
+      })
+      .catch((err: unknown) => {
+        customToast('잘못된 접근입니다', 'error');
+        console.error(err);
+      });
+
+    getMyGroup()
+      .then(res => {
+        console.log(res);
+      })
+      .catch((err: unknown) => {
+        customToast('잘못된 접근입니다', 'error');
+        console.error(err);
+      });
+  }, []);
   return (
     <Wrapper>
       <Head>
@@ -14,7 +53,7 @@ const Mypage = () => {
       </Head>
       <Header />
       <_Wrapper>
-        <Profile {...mypage} />
+        <Profile {...user} />
         <ProfileGroupList />
       </_Wrapper>
     </Wrapper>
