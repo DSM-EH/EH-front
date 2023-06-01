@@ -65,7 +65,6 @@ const _Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.background};
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const _Title = styled.span`

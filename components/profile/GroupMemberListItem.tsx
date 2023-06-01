@@ -36,6 +36,7 @@ const _Wrapper = styled.div`
   padding: 6px 12px;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 const _ProfileImage = styled(Image)`
