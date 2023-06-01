@@ -7,7 +7,6 @@ interface PropsType extends HTMLAttributes<HTMLDivElement> {
 }
 
 const ModalBackground = ({ children, modalName, ...rest }: PropsType) => {
-
   return <_Wrapper {...rest}>{children}</_Wrapper>;
 };
 
