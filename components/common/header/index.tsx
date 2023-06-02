@@ -8,11 +8,10 @@ import { useModal } from '@/hooks/useModal';
 import LoginModal from '../modal/Login';
 import { getCookie } from '@/utils/cookie/cookie';
 import { getProfile } from '@/apis/getProfile';
-import { DummyData } from '@/assets';
 
 interface ProfileType {
   name: string;
-  profileImageUrl: string | StaticImageData;
+  profileImageUrl: string;
 }
 
 const Header = () => {
@@ -33,7 +32,7 @@ const Header = () => {
         setIsLogin(true);
         setProfile({
           name: data.nickname,
-          profileImageUrl: DummyData,
+          profileImageUrl: data.profile_image_url,
         });
       })
       .catch((error: unknown) => {
@@ -108,7 +107,7 @@ const _NavText = styled(Link)`
   }
 `;
 
-const _ProfileImage = styled(Image)`
+const _ProfileImage = styled.img`
   border-radius: 16px;
 `;
 
