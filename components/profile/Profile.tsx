@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import { ProfileType } from '@/types/profile';
-import Image from 'next/image';
+import { ProfileApiType } from '@/types/profile';
 import Button from '../common/button';
 import { deleteCookie } from '@/utils/cookie/cookie';
+import { useEffect, useState } from 'react';
 
-const Profile = ({ name, imageUrl, introduce, myProfile }: ProfileType) => {
+const Profile = ({ id, email, password, nickname, description, profile_image_url }: ProfileApiType) => {
+  const [myProfile, setMyProfile] = useState<boolean>(false);
+
   const onClick = () => {};
 
   const logOutOnClick = () => {
@@ -14,11 +16,19 @@ const Profile = ({ name, imageUrl, introduce, myProfile }: ProfileType) => {
     window.location.href = '/';
   };
 
+  useEffect(() => {
+    const myEmail = localStorage.getItem('email');
+
+    if (email === myEmail) {
+      setMyProfile(true);
+    }
+  }, []);
+
   return (
     <_Wrapper>
-      <_Image src={imageUrl} alt="name" />
-      <_Name>{name}</_Name>
-      <_Introduce>{introduce}</_Introduce>
+      <_Image src={profile_image_url} alt="name" />
+      <_Name>{nickname}</_Name>
+      <_Introduce>{description}</_Introduce>
       {myProfile && (
         <>
           <Button onClick={onClick} buttonColor="main01" fontColor="main01">
@@ -42,7 +52,7 @@ const _Wrapper = styled.nav`
   padding: 70px 135px;
 `;
 
-const _Image = styled(Image)`
+const _Image = styled.img`
   width: 120px;
   height: 120px;
   border-radius: 15px;
