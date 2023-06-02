@@ -25,20 +25,20 @@ const Header = () => {
 
   useEffect(() => {
     const acccessToken: string = getCookie('accessToken');
-    if (acccessToken) {
-      getProfile()
-        .then(res => {
-          const { data } = res;
-          setIsLogin(true);
-          setProfile({
-            name: '김경호',
-            profileImageUrl: DummyData,
-          });
-        })
-        .catch((error: unknown) => {
-          console.error(error);
+
+    getProfile()
+      .then(res => {
+        const { data } = res;
+        console.log(data)
+        setIsLogin(true);
+        setProfile({
+          name: data.nickname,
+          profileImageUrl: DummyData,
         });
-    }
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+      });
   }, []);
 
   return (
