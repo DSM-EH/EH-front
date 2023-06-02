@@ -9,19 +9,24 @@ import Button from '@/components/common/button';
 import GroupMemberList from '@/components/profile/GroupMemberList';
 import PromotionList from '@/components/promotion/PromotionList';
 import { copyClipBoardOnClick } from '@/utils/functions/copyClipBoard';
-import { Introduce, Option } from '@/assets';
+import { Option } from '@/assets';
 import skeleton from '@/lib/styles/skeleton';
 import { getGroupFindOne } from '@/apis/getGroupFindOne';
 import { customToast } from '@/utils/toast/toast';
 import { GetGroupApiType } from '@/types/group';
 import { useModal } from '@/hooks/useModal';
 import SupportModal from '@/components/common/modal/Support';
+import { getMembers } from '@/apis/getMembers';
+import Apply from '@/components/member/Apply';
+import ApplyModal from '@/components/common/modal/ApplyModal';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
   const { groupName } = router.query as { groupName: string };
   const { modal, openModal } = useModal('Support');
+  const { modal: isSupportModalOpen } = useModal('Apply');
+  const [isMember, setIsMember] = useState<boolean>(false);
   const [group, setGroup] = useState<GetGroupApiType>({
     id: 0,
     title: '',
@@ -45,6 +50,8 @@ const GroupIdPage = () => {
     router.push('/group/[groupName]/member', `/group/${groupName}/member`);
   };
 
+  const writeOnClick = () => {};
+
   useEffect(() => {
     const timer: NodeJS.Timeout = setTimeout(() => {
       setIsLoading(false);
@@ -60,8 +67,24 @@ const GroupIdPage = () => {
       .then(res => {
         const { data } = res;
         setGroup(data);
+        console.log(res.data);
       })
       .catch(err => {
+        console.error(err);
+        customToast('개발자 에러', 'error');
+      });
+
+    getMembers(id)
+      .then(res => {
+        const { data } = res;
+        const email: string | null = localStorage.getItem('email');
+        const result: boolean = data.some((element: any) => element.email === email);
+
+        if (result) {
+          setIsMember(true);
+        }
+      })
+      .catch((err: unknown) => {
         console.error(err);
         customToast('개발자 에러', 'error');
       });
@@ -72,6 +95,7 @@ const GroupIdPage = () => {
   return (
     <div>
       {modal.isOpen && <SupportModal />}
+      {isSupportModalOpen.isOpen && <ApplyModal />}
       <Head>
         <title>{group.title}</title>
       </Head>
@@ -113,6 +137,15 @@ const GroupIdPage = () => {
               <_SkeletonButton />
               <_SkeletonButton />
             </>
+          ) : isMember ? (
+            <>
+              <_Button onClick={writeOnClick} buttonColor="main01" fontColor="main01">
+                글쓰기
+              </_Button>
+              <_Button onClick={copyClipBoardOnClick} buttonColor="main01" fontColor="main01">
+                링크복사
+              </_Button>
+            </>
           ) : (
             <>
               <_Button onClick={openModal} buttonColor="main01" fontColor="main01">
@@ -127,7 +160,10 @@ const GroupIdPage = () => {
         </_ButtonWrapper>
       </_UpperWrapper>
       <_MainWrapper>
-        <GroupMemberList onClick={onShowMemberClick} isLoading={isLoading} title="그룹 멤버 💪🏻" />
+        <div>
+          <GroupMemberList onClick={onShowMemberClick} isLoading={isLoading} title="그룹 멤버 💪🏻" />
+          {isMember && <Apply isLoading={isLoading} />}
+        </div>
         <PromotionList isLoading={isLoading} />
       </_MainWrapper>
     </div>
