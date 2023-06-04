@@ -27,8 +27,9 @@ const ProfileInit = ({ signUpInformation, setSignUpInformation }: PropsType) => 
       formData.append('file', fileList[0]);
       uploadImage(formData)
         .then(res => {
-          console.log(res); 
+          console.log(res);
           setSignUpInformation({ ...signUpInformation, profileImageUrl: res.data.file_url });
+          console.log(res.data.file_url);
           setImage(res.data.file_url);
         })
         .catch(err => {
@@ -58,7 +59,7 @@ const ProfileInit = ({ signUpInformation, setSignUpInformation }: PropsType) => 
   };
 
   const showImage = useMemo(() => {
-    if (!image && image === undefined) {
+    if (!image) {
       return (
         <>
           <Image src={FindImageLogo} alt="FindImage" />
@@ -66,7 +67,7 @@ const ProfileInit = ({ signUpInformation, setSignUpInformation }: PropsType) => 
         </>
       );
     }
-    return <Image src={image} alt="image" />;
+    return <_Image src={image} alt="image" />;
   }, [image]);
 
   return (
@@ -74,7 +75,6 @@ const ProfileInit = ({ signUpInformation, setSignUpInformation }: PropsType) => 
       <Image src={Logo} alt="Logo" />
       <_Wrapper>
         <_Title>프로필 사진</_Title>
-        {/* <FindImage height={300} name="profileImageUrl" onChange={onChange} /> */}
         <_SelectImageWrapper height={300} onClick={() => imageRef.current?.click()}>
           {showImage}
           <_FileSelector ref={imageRef} type="file" accept="image/*" onChange={onChange} />
@@ -124,4 +124,10 @@ const _Text = styled.p`
   margin-top: 10px;
   color: ${({ theme }) => theme.color.gray300};
   ${({ theme }) => theme.font.body5};
+`;
+
+const _Image = styled.img`
+  width: 300px;
+  height: 300px;
+  border-radius: 15px;
 `;
