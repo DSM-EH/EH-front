@@ -45,7 +45,7 @@ const ApplyModal = () => {
   const deleteOnClick = () => {
     const groupId: string | null = localStorage.getItem('groupId');
 
-    if (groupId) return;
+    if (!groupId) return;
 
     deleteRequest(member.email, Number(groupId))
       .then(res => {
@@ -61,7 +61,7 @@ const ApplyModal = () => {
   const acceptOnClick = () => {
     const groupId: string | null = localStorage.getItem('groupId');
 
-    if (groupId) return;
+    if (!groupId) return;
 
     acceptRequest(member.email, Number(groupId))
       .then(res => {
@@ -77,9 +77,8 @@ const ApplyModal = () => {
   useEffect(() => {
     const groupId = localStorage.getItem('groupId');
 
-    if (!groupId) {
-      return;
-    }
+    if (!groupId) return;
+
     getApplyMembers(groupId)
       .then(({ data }) => {
         data.forEach((ele: any) => {
