@@ -1,26 +1,38 @@
 import styled from '@emotion/styled';
 import TextField from '../common/textfield';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useMemo, useRef, RefObject } from 'react';
 import { CreateGroupType } from '@/types/group';
-import FindImage from '../common/find/FindImage';
 import Textarea from '../common/textarea';
 import Button from '../common/button';
 import { createGroupApi } from '@/apis/createGroup';
 import { customToast } from '@/utils/toast/toast';
+import Image from 'next/image';
+import { FindImageLogo } from '@/assets';
+import { uploadImage } from '@/apis/uploadImage';
 
 const CreateGroup = () => {
   const [createGroup, setCreateGroup] = useState<CreateGroupType>({
     title: '',
-    imageUrl: 'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
+    imageUrl: '',
     introduce: '',
-    groupBackgroundImageUrl:
-      'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
+    groupBackgroundImageUrl: '',
     contents: '',
-    posterImageUrl:
-      'https://avatars.githubusercontent.com/u/81161675?s=400&u=4d9580f13b97e72a63c3777a0e1d683e362df0f9&v=4',
+    posterImageUrl: '',
     member: 0,
     time: '',
   });
+  const [imageState, setImageState] = useState<{
+    imageUrl: string;
+    groupBackgroundImageUrl: string;
+    posterImageUrl: string;
+  }>({
+    imageUrl: '',
+    groupBackgroundImageUrl: '',
+    posterImageUrl: '',
+  });
+  const ref: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const ref1 = useRef<HTMLInputElement>(null);
+  const ref2 = useRef<HTMLInputElement>(null);
 
   const numberCheck = (value: string) => {
     const numberRegEx: RegExp = /[a-z]|[0-9]/;
@@ -42,6 +54,40 @@ const CreateGroup = () => {
     }
     if (numberCheckResult) setCreateGroup({ ...createGroup, [name]: value });
   };
+
+  const imageOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileList: FileList | null = e.target.files;
+    const { name } = e.target;
+    const formData: FormData = new FormData();
+
+    if (fileList && fileList[0]) {
+      formData.append('file', fileList[0]);
+      uploadImage(formData)
+        .then(res => {
+          console.log(res);
+          console.log(res.data.file_url);
+          setImageState({ ...imageState, [name]: res.data.file_url });
+          setCreateGroup({ ...createGroup, [name]: res.data.file_url });
+        })
+        .catch(err => {
+          customToast('이미지 업로드에 실패했습니다.', 'error');
+          console.error(err);
+        });
+    }
+  };
+
+  const showImage = (image: string, height: number, imageValue: string) =>
+    useMemo(() => {
+      if (!imageValue) {
+        return (
+          <>
+            <Image src={FindImageLogo} alt="FindImage" />
+            <_Text>이미지를 선택하세요</_Text>
+          </>
+        );
+      }
+      return <_Image src={imageValue} height={height} alt={image} />;
+    }, [imageValue]);
 
   const onClick = () => {
     const email = localStorage.getItem('email');
@@ -92,7 +138,10 @@ const CreateGroup = () => {
       />
       <_ImageInputWrapper>
         <_SmallTitle>그룹 이미지</_SmallTitle>
-        <FindImage name="imageUrl" onChange={onChange} />
+        <_SelectImageWrapper height={200} onClick={() => ref.current?.click()}>
+          {showImage(createGroup.groupBackgroundImageUrl, 200, imageState.imageUrl)}
+          <_FileSelector ref={ref} type="file" accept="image/*" onChange={imageOnChange} name="imageUrl" />
+        </_SelectImageWrapper>
       </_ImageInputWrapper>
       <TextField
         text="그룹 소개"
@@ -104,7 +153,16 @@ const CreateGroup = () => {
       />
       <_ImageInputWrapper>
         <_SmallTitle>그룹 이미지</_SmallTitle>
-        <FindImage name="groupBackgroundImageUrl" />
+        <_SelectImageWrapper height={200} onClick={() => ref1.current?.click()}>
+          {showImage(createGroup.imageUrl, 200, imageState.groupBackgroundImageUrl)}
+          <_FileSelector
+            ref={ref1}
+            type="file"
+            accept="image/*"
+            onChange={imageOnChange}
+            name="groupBackgroundImageUrl"
+          />
+        </_SelectImageWrapper>
       </_ImageInputWrapper>
       <Textarea
         name="contents"
@@ -115,7 +173,10 @@ const CreateGroup = () => {
       />
       <_ImageInputWrapper>
         <_SmallTitle>홍보 포스터</_SmallTitle>
-        <FindImage name="posterImageUrl" height={500} />
+        <_SelectImageWrapper height={500} onClick={() => ref2.current?.click()}>
+          {showImage(createGroup.posterImageUrl, 500, imageState.posterImageUrl)}
+          <_FileSelector ref={ref2} type="file" accept="image/*" onChange={imageOnChange} name="posterImageUrl" />
+        </_SelectImageWrapper>
       </_ImageInputWrapper>
       <_ImageInputWrapper>
         <TextField
@@ -170,4 +231,32 @@ const _ImageInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 80px;
+`;
+
+const _Text = styled.p`
+  margin-top: 10px;
+  color: ${({ theme }) => theme.color.gray300};
+  ${({ theme }) => theme.font.body5};
+`;
+
+const _Image = styled.img<{ height: number }>`
+  width: 340px;
+  height: ${({ height }) => `${height}px`};
+`;
+
+const _FileSelector = styled.input`
+  width: 340px;
+  height: 200px;
+  display: none;
+`;
+
+const _SelectImageWrapper = styled.form<{ height: number }>`
+  width: 340px;
+  height: ${({ height = 200 }) => `${height}px`};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed ${({ theme }) => theme.color.gray300};
+  cursor: pointer;
 `;
