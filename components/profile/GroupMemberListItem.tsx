@@ -1,6 +1,7 @@
 import skeleton from '@/lib/styles/skeleton';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { useModal } from '@/hooks/useModal';
 
 interface PropsType {
   id: number;
@@ -10,11 +11,12 @@ interface PropsType {
   description: string;
   profile_image_url: string;
   isLoading: boolean;
+  onClick?: () => void;
 }
 
-const GroupMemberListItem = ({ profile_image_url, nickname, isLoading }: PropsType) => {
+const GroupMemberListItem = ({ profile_image_url, nickname, isLoading, onClick }: PropsType) => {
   return (
-    <_Wrapper>
+    <_Wrapper onClick={onClick}>
       {isLoading ? (
         <>
           <_Skeleton width="50px" height="50px" />
@@ -39,7 +41,7 @@ const _Wrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const _ProfileImage = styled(Image)`
+const _ProfileImage = styled.img`
   width: 50px;
   height: 50px;
   margin-right: 30px;
