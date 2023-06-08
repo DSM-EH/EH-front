@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Promotion from './Promotion';
 import { promotion } from '@/utils/constants/promotion';
-import { communication } from '@/utils/constants/data';
 import CommunicationItem from './CommunicationItem';
+import { getPostsApi } from '@/apis/getPosts';
+import { customToast } from '@/utils/toast/toast';
 
 interface ListType {
   [key: string]: boolean;
@@ -13,12 +14,53 @@ interface PropsType {
   isLoading: boolean;
 }
 
+interface PostType {
+  content: string;
+  created_at: any;
+  group: {
+    id: number;
+    title: string;
+    profile_image: string;
+    background_image: string;
+    description: string;
+  };
+  id: number;
+  is_promotion: boolean;
+  title: string;
+  writer: {
+    id: number;
+    email: string;
+    password: string;
+    nickname: string;
+    description: string;
+    profile_image_url: string;
+  };
+}
+
 const PromotionList = ({ isLoading }: PropsType) => {
   const [list, setList] = useState<ListType>({
     전체: true,
     소통: false,
     홍보: false,
   });
+  const [post, setPost] = useState<PostType[]>([]);
+
+  useEffect(() => {
+    const groupId = localStorage.getItem('groupId');
+    
+    if(!groupId) return;
+
+    getPostsApi(groupId)
+      .then(res => {
+        const { data } = res;
+        console.log(data);
+        setPost(data);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+        customToast('why error', 'error');
+      });
+  }, []);
 
   const onClick = (item: string) => {
     const updatedList: ListType = Object.keys(list).reduce(
@@ -42,14 +84,14 @@ const PromotionList = ({ isLoading }: PropsType) => {
       {list['전체'] ? (
         <>
           <Promotion isLoading={isLoading} {...promotion} />
-          {communication.map(element => (
+          {post.map(element => (
             <CommunicationItem key={element.id} {...element} />
           ))}
         </>
       ) : list['홍보'] ? (
         <Promotion isLoading={isLoading} {...promotion} />
       ) : (
-        communication.map(element => <CommunicationItem key={element.id} {...element} />)
+        post.map(element => <CommunicationItem key={element.id} {...element} />)
       )}
     </_Wrapper>
   );

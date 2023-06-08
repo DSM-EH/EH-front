@@ -19,6 +19,7 @@ import SupportModal from '@/components/common/modal/Support';
 import { getMembers } from '@/apis/getMembers';
 import Apply from '@/components/member/Apply';
 import ApplyModal from '@/components/common/modal/ApplyModal';
+import { getPostsApi } from '@/apis/getPosts';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,18 +46,21 @@ const GroupIdPage = () => {
       password: '',
     },
   });
+  let id: string | null = '';
 
   const onShowMemberClick = () => {
     router.push('/group/[groupName]/member', `/group/${groupName}/member`);
   };
 
-  const writeOnClick = () => {};
+  const writeOnClick = () => {
+    router.push('/group/[groupName]/write', `/group/${groupName}/write`);
+  };
 
   useEffect(() => {
     const timer: NodeJS.Timeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    const id: string | null = localStorage.getItem('groupId');
+    id = localStorage.getItem('groupId');
 
     if (!id) {
       customToast('잘못된 접근입니다', 'error');

@@ -1,43 +1,129 @@
 import styled from '@emotion/styled';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import Comment from './Comment';
+import { ChangeEvent, useEffect, useState, KeyboardEvent } from 'react';
+import { getComment } from '@/apis/getComment';
+import { createComment } from '@/apis/createComment';
+import { customToast } from '@/utils/toast/toast';
+import { getUserProfile } from '@/apis/getUserProfile';
 
 interface PropsType {
+  content: string;
+  created_at: Date;
+  group: {
+    id: number;
+    title: string;
+    profile_image: string;
+    background_image: string;
+    description: string;
+  };
+  id: number;
+  is_promotion: boolean;
   title: string;
-  contents: string;
-  profileImageUrl: string;
-  name: string;
-  date: string;
-  imageUrl: string | StaticImageData;
-  comment: {
-    profileImageUrl: string;
-    name: string;
-    contents: string;
-  }[];
+  writer: {
+    id: number;
+    email: string;
+    password: string;
+    nickname: string;
+    description: string;
+    profile_image_url: string;
+  };
 }
 
-const CommunicationItem = ({ title, contents, profileImageUrl, name, imageUrl, date, comment }: PropsType) => {
+interface CommentType {
+  content: string;
+  id: number;
+  writer: {
+    description: string;
+    email: string;
+    id: number;
+    nickname: string;
+    password: string;
+    profile_image_url: string;
+  };
+}
+
+const CommunicationItem = ({ content, created_at, group, id, is_promotion, title, writer }: PropsType) => {
+  const [comment, setComment] = useState<CommentType[]>([]);
+  const [commentState, setCommentState] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
+  const date: Date = new Date(created_at);
+  const [myImage, setMyImage] = useState<string>('');
+  const formatDate: string = date.toLocaleDateString();
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCommentState(e.target.value);
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const postId = localStorage.getItem('groupId');
+
+      if (!postId) return;
+
+      createComment(userId, postId, commentState)
+        .then(res => {
+          console.log(res);
+          customToast('댓글 작성 성공!', 'success');
+          setCommentState('');
+        })
+        .catch((err: unknown) => {
+          console.error(err);
+          customToast('댓글 작성 실패', 'error');
+        });
+    }
+  };
+
+  useEffect(() => {
+    const groupId: string | null = localStorage.getItem('groupId');
+    const email = localStorage.getItem('email');
+
+    if (!groupId || !email) return;
+
+    getUserProfile(email)
+      .then(res => {
+        setMyImage(res.data.profile_image_url);
+        setUserId(res.data.id.toString());
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+      });
+
+    getComment(groupId)
+      .then(res => {
+        console.log('data', res.data);
+        setComment(res.data);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <_Wrapper>
       <_Title>{title}</_Title>
       <_UpperWrapper>
-        <_ProfileImage src={profileImageUrl} alt="Profile" />
-        <_Name>{name}</_Name>
-        <_Date>{date.split('-').join('.')}</_Date>
+        <_ProfileImage src={writer.profile_image_url} alt="Profile" />
+        <_Name>{writer.nickname}</_Name>
+        <_Date>{formatDate}</_Date>
       </_UpperWrapper>
       <_ContentsText>
-        {contents.split('\n').map((value: string, index: number) => (
+        {content.split('\n').map((value: string, index: number) => (
           <span key={index}>
             {value}
             <br />
           </span>
         ))}
       </_ContentsText>
-      <_CommunicationImage src={imageUrl} alt="Communication" />
       <_CommentWrapper>
-        <_CommentProfile src={profileImageUrl} alt="Profile" />
+        <_CommentProfile src={myImage} alt="Profile" />
         <_CommentInputWrapper>
-          <_CommentInput placeholder="댓글을 입력해주세요." />
+          <_CommentInput
+            placeholder="댓글을 입력해주세요."
+            onKeyDown={onKeyDown}
+            onChange={onChange}
+            value={commentState}
+          />
         </_CommentInputWrapper>
       </_CommentWrapper>
       {comment.map((element, index) => (
@@ -61,7 +147,7 @@ const _Title = styled.p`
   color: ${({ theme }) => theme.color.black};
 `;
 
-const _ProfileImage = styled(Image)`
+const _ProfileImage = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 8px;
@@ -89,12 +175,7 @@ const _Date = styled.span`
 const _ContentsText = styled.span`
   ${({ theme }) => theme.font.body4};
   color: ${({ theme }) => theme.color.black};
-`;
-
-const _CommunicationImage = styled(Image)`
-  width: 620px;
-  height: 400px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 const _CommentWrapper = styled.div`
@@ -102,7 +183,7 @@ const _CommentWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const _CommentProfile = styled(Image)`
+const _CommentProfile = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 8px;

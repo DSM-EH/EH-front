@@ -2,17 +2,24 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface PropsType {
-  profileImageUrl: string;
-  name: string;
-  contents: string;
+  content: string;
+  id: number;
+  writer: {
+    description: string;
+    email: string;
+    id: number;
+    nickname: string;
+    password: string;
+    profile_image_url: string;
+  };
 }
 
-const Comment = ({ profileImageUrl, name, contents }: PropsType) => {
+const Comment = ({ content, writer }: PropsType) => {
   return (
     <_Wrapper>
-      <_ProfileImage src={profileImageUrl} alt={name} />
-      <_Name>{name}</_Name>
-      <_Contents>{contents}</_Contents>
+      <_ProfileImage src={writer.profile_image_url} alt={writer.nickname} />
+      <_Name>{writer.nickname}</_Name>
+      <_Contents>{content}</_Contents>
     </_Wrapper>
   );
 };
@@ -24,7 +31,7 @@ const _Wrapper = styled.div`
   align-items: center;
 `;
 
-const _ProfileImage = styled(Image)`
+const _ProfileImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 10px;
