@@ -1,5 +1,5 @@
+import skeleton from '@/lib/styles/skeleton';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 
 interface PropsType {
   content: string;
@@ -12,14 +12,25 @@ interface PropsType {
     password: string;
     profile_image_url: string;
   };
+  isLoading: boolean;
 }
 
-const Comment = ({ content, writer }: PropsType) => {
+const Comment = ({ content, writer, isLoading }: PropsType) => {
   return (
     <_Wrapper>
-      <_ProfileImage src={writer.profile_image_url} alt={writer.nickname} />
-      <_Name>{writer.nickname}</_Name>
-      <_Contents>{content}</_Contents>
+      {isLoading ? (
+        <>
+          <_SkeletonImage />
+          <_SkeletonText width={50} />
+          <_SkeletonText />
+        </>
+      ) : (
+        <>
+          <_ProfileImage src={writer.profile_image_url} alt={writer.nickname} />
+          <_Name>{writer.nickname}</_Name>
+          <_Contents>{content}</_Contents>
+        </>
+      )}
     </_Wrapper>
   );
 };
@@ -29,6 +40,25 @@ export default Comment;
 const _Wrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
+`;
+
+const _SkeletonImage = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
+  margin-right: 20px;
+`;
+
+const _SkeletonText = styled.div<{ width?: number }>`
+  width: ${({ width = 100 }) => (width ? `${width}px` : `${width}%`)};
+  height: 30px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
+  margin-right: 20px;
 `;
 
 const _ProfileImage = styled.img`

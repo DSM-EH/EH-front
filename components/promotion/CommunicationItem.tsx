@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Comment from './Comment';
 import { ChangeEvent, useEffect, useState, KeyboardEvent } from 'react';
 import { getComment } from '@/apis/getComment';
 import { createComment } from '@/apis/createComment';
 import { customToast } from '@/utils/toast/toast';
 import { getUserProfile } from '@/apis/getUserProfile';
+import skeleton from '@/lib/styles/skeleton';
+import { css } from '@emotion/react';
 
 interface PropsType {
   content: string;
@@ -28,6 +29,7 @@ interface PropsType {
     description: string;
     profile_image_url: string;
   };
+  isLoading: boolean;
 }
 
 interface CommentType {
@@ -43,7 +45,7 @@ interface CommentType {
   };
 }
 
-const CommunicationItem = ({ content, created_at, group, id, is_promotion, title, writer }: PropsType) => {
+const CommunicationItem = ({ content, created_at, group, id, is_promotion, title, writer, isLoading }: PropsType) => {
   const [comment, setComment] = useState<CommentType[]>([]);
   const [commentState, setCommentState] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
@@ -76,7 +78,7 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
 
   useEffect(() => {
     const groupId: string | null = localStorage.getItem('groupId');
-    const email = localStorage.getItem('email');
+    const email: string | null = localStorage.getItem('email');
 
     if (!groupId || !email) return;
 
@@ -101,22 +103,35 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
 
   return (
     <_Wrapper>
-      <_Title>{title}</_Title>
+      {isLoading ? <_SkeletonText /> : <_Title>{title}</_Title>}
       <_UpperWrapper>
-        <_ProfileImage src={writer.profile_image_url} alt="Profile" />
-        <_Name>{writer.nickname}</_Name>
-        <_Date>{formatDate}</_Date>
+        {isLoading ? (
+          <>
+            <_SkeletonImage size={30} />
+            <_SkeletonText width={60} />
+            <_SkeletonText width={90} />
+          </>
+        ) : (
+          <>
+            <_ProfileImage src={writer.profile_image_url} alt="Profile" />
+            <_Name>{writer.nickname}</_Name>
+            <_Date>{formatDate}</_Date>
+          </>
+        )}
       </_UpperWrapper>
       <_ContentsText>
-        {content.split('\n').map((value: string, index: number) => (
-          <span key={index}>
-            {value}
-            <br />
-          </span>
-        ))}
+        {content.split('\n').map((value: string, index: number) => {
+          if (isLoading) return <_SkeletonText />;
+          return (
+            <span key={index}>
+              {value}
+              <br />
+            </span>
+          );
+        })}
       </_ContentsText>
       <_CommentWrapper>
-        <_CommentProfile src={myImage} alt="Profile" />
+        {isLoading ? <_SkeletonImage size={40} /> : <_CommentProfile src={myImage} alt="Profile" />}
         <_CommentInputWrapper>
           <_CommentInput
             placeholder="댓글을 입력해주세요."
@@ -126,9 +141,9 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
           />
         </_CommentInputWrapper>
       </_CommentWrapper>
-      {comment.map((element, index) => (
-        <Comment key={index} {...element} />
-      ))}
+      {comment.map((element: CommentType, index: number) => {
+        return <Comment isLoading={isLoading} key={index} {...element} />;
+      })}
     </_Wrapper>
   );
 };
@@ -140,6 +155,29 @@ const _Wrapper = styled.div`
   border-radius: 10px;
   padding: 30px 40px;
   margin-bottom: 30px;
+`;
+
+const _SkeletonImage = styled.div<{ size?: number }>`
+  ${({ size = 40 }) =>
+    css`
+      width: ${size}px;
+      height: ${size}px;
+    `}
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
+`;
+
+const _SkeletonText = styled.div<{ width?: number }>`
+  width: ${({ width = 100 }) => (width < 100 ? `${width}px` : `${width}%`)};
+  height: 30px;
+  margin-right: 60px;
+  background-color: ${({ theme }) => theme.color.gray200};
+  animation: ${skeleton.skeletonAnimation} 1s infinite ease-in-out;
+  cursor: progress;
 `;
 
 const _Title = styled.p`
@@ -180,7 +218,7 @@ const _ContentsText = styled.span`
 
 const _CommentWrapper = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin: 30px 0;
 `;
 
 const _CommentProfile = styled.img`

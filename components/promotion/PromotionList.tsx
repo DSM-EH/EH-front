@@ -85,13 +85,13 @@ const PromotionList = ({ isLoading }: PropsType) => {
         <>
           <Promotion isLoading={isLoading} {...promotion} />
           {post.map(element => (
-            <CommunicationItem key={element.id} {...element} />
+            <CommunicationItem isLoading={isLoading} key={element.id} {...element} />
           ))}
         </>
       ) : list['홍보'] ? (
         <Promotion isLoading={isLoading} {...promotion} />
       ) : (
-        post.map(element => <CommunicationItem key={element.id} {...element} />)
+        post.map(element => <CommunicationItem key={element.id} isLoading={isLoading} {...element} />)
       )}
     </_Wrapper>
   );
