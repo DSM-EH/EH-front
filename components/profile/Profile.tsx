@@ -13,6 +13,7 @@ const Profile = ({ id, email, password, nickname, description, profile_image_url
     deleteCookie('access_token');
     deleteCookie('refresh_token');
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
     window.location.href = '/';
   };
 
@@ -29,7 +30,7 @@ const Profile = ({ id, email, password, nickname, description, profile_image_url
       <_Image src={profile_image_url} alt="name" />
       <_Name>{nickname}</_Name>
       <_Introduce>{description}</_Introduce>
-      {myProfile && (
+      {!myProfile && (
         <>
           <Button onClick={onClick} buttonColor="main01" fontColor="main01">
             수정
