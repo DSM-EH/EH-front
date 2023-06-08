@@ -1,18 +1,30 @@
 import styled from '@emotion/styled';
 import { GroupItemType } from '@/utils/constants/group';
-import Image from 'next/image';
 
-const ProfileGroupItem = ({ title, description, imageUrl, nowMember, maxMember }: GroupItemType) => {
+interface GroupType {
+  id: number;
+  title: string;
+  profile_image: string;
+  background_image: string;
+  description: string;
+  poster_image: string;
+  max_people: number;
+  set_time: string;
+}
+
+const ProfileGroupItem = ({ title, description, profile_image, max_people }: GroupType) => {
+  const onClick = () => {
+    window.location.href = `/group/${title}`;
+  };
+
   return (
-    <_Wrapper>
-      <_Image src={imageUrl} alt={title} />
+    <_Wrapper onClick={onClick}>
+      <_Image src={profile_image} alt={title} />
       <_InformationWrapper>
         <_Title>{title}</_Title>
         <_InnerWrapper>
           <_Content>{description}</_Content>
-          <_MemberText>
-            {nowMember} / {maxMember}
-          </_MemberText>
+          <_MemberText>{max_people}</_MemberText>
         </_InnerWrapper>
       </_InformationWrapper>
     </_Wrapper>
@@ -33,7 +45,7 @@ const _Wrapper = styled.li`
   cursor: pointer;
 `;
 
-const _Image = styled(Image)`
+const _Image = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 10px;
