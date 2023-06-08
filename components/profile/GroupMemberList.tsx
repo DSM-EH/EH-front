@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 import { Expansion } from '@/assets';
-import Image from 'next/image';
-import { members } from '@/utils/constants/member';
 import GroupMemberListItem from './GroupMemberListItem';
 import { useEffect, useState } from 'react';
 import { getMembers } from '@/apis/getMembers';
 import { customToast } from '@/utils/toast/toast';
+import Image from 'next/image';
 
 interface PropsType {
   title: string;
@@ -34,6 +33,13 @@ const GroupMemberList = ({ title, isLoading, onClick }: PropsType) => {
     getMembers(id)
       .then(res => {
         const { data } = res;
+        const email: string | null = localStorage.getItem('email');
+
+        if (!email) {
+          customToast('잘못된 접근입니다.', 'error');
+          return;
+        }
+
         setMember(data);
       })
       .catch((err: unknown) => {
@@ -65,6 +71,7 @@ const _Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.background};
   display: flex;
   flex-direction: column;
+  margin-bottom: 95px;
 `;
 
 const _Title = styled.span`
