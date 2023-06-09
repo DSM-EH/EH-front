@@ -46,7 +46,6 @@ const GroupIdPage = () => {
       password: '',
     },
   });
-  let id: string | null = '';
 
   const onShowMemberClick = () => {
     router.push('/group/[groupName]/member', `/group/${groupName}/member`);
@@ -57,10 +56,10 @@ const GroupIdPage = () => {
   };
 
   useEffect(() => {
+    const id: string | null = localStorage.getItem('groupId');
     const timer: NodeJS.Timeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    id = localStorage.getItem('groupId');
 
     if (!id) {
       customToast('잘못된 접근입니다', 'error');
