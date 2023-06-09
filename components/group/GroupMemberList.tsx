@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Members } from '@/utils/constants/member/member';
-import GroupMember from './Member';
+import GroupMember from './GroupMember';
 
 interface PropsType {
   title: string;
