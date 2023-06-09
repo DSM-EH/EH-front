@@ -19,7 +19,7 @@ const Promotion = ({ title, contents, recruitmentMember, gatheringTime, imageUrl
       <_ContentsWrapper>
         {contents.split('\n').map((line: string, index: number) =>
           isLoading ? (
-            <_SkeletonText />
+            <_SkeletonText key={index} />
           ) : (
             <span key={index}>
               {line}
