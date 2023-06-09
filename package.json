@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -31,6 +32,14 @@
     "yarn": "^1.22.19"
   },
   "devDependencies": {
-    "@types/react-query": "^1.2.9"
+    "@types/react-query": "^1.2.9",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
