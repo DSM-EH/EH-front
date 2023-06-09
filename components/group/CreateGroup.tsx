@@ -76,7 +76,7 @@ const CreateGroup = () => {
     }
   };
 
-  const showImage = (image: string, height: number, imageValue: string) =>
+  const ShowImage = (image: string, height: number, imageValue: string) =>
     useMemo(() => {
       if (!imageValue) {
         return (
@@ -104,6 +104,7 @@ const CreateGroup = () => {
       profile_image: createGroup.imageUrl,
       background_image: createGroup.groupBackgroundImageUrl,
       poster_image: createGroup.posterImageUrl,
+      contents: createGroup.contents,
       description: createGroup.introduce,
       set_time: date,
       max_people: createGroup.member,
@@ -139,7 +140,7 @@ const CreateGroup = () => {
       <_ImageInputWrapper>
         <_SmallTitle>그룹 이미지</_SmallTitle>
         <_SelectImageWrapper height={200} onClick={() => ref.current?.click()}>
-          {showImage(createGroup.groupBackgroundImageUrl, 200, imageState.imageUrl)}
+          {ShowImage(createGroup.groupBackgroundImageUrl, 200, imageState.imageUrl)}
           <_FileSelector ref={ref} type="file" accept="image/*" onChange={imageOnChange} name="imageUrl" />
         </_SelectImageWrapper>
       </_ImageInputWrapper>
@@ -154,7 +155,7 @@ const CreateGroup = () => {
       <_ImageInputWrapper>
         <_SmallTitle>그룹 이미지</_SmallTitle>
         <_SelectImageWrapper height={200} onClick={() => ref1.current?.click()}>
-          {showImage(createGroup.imageUrl, 200, imageState.groupBackgroundImageUrl)}
+          {ShowImage(createGroup.imageUrl, 200, imageState.groupBackgroundImageUrl)}
           <_FileSelector
             ref={ref1}
             type="file"
@@ -174,7 +175,7 @@ const CreateGroup = () => {
       <_ImageInputWrapper>
         <_SmallTitle>홍보 포스터</_SmallTitle>
         <_SelectImageWrapper height={500} onClick={() => ref2.current?.click()}>
-          {showImage(createGroup.posterImageUrl, 500, imageState.posterImageUrl)}
+          {ShowImage(createGroup.posterImageUrl, 500, imageState.posterImageUrl)}
           <_FileSelector ref={ref2} type="file" accept="image/*" onChange={imageOnChange} name="posterImageUrl" />
         </_SelectImageWrapper>
       </_ImageInputWrapper>
