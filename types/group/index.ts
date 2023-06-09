@@ -29,6 +29,7 @@ export interface CreateGroupApiType {
   profile_image: string;
   background_image: string;
   description: string;
+  contents: string;
   poster_image: string;
   max_people: number;
   set_time: Date;
