@@ -99,7 +99,7 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
       .catch((err: unknown) => {
         console.error(err);
       });
-  }, []);
+  }, [comment]);
 
   return (
     <_Wrapper>
@@ -225,6 +225,7 @@ const _CommentProfile = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 8px;
+  margin-right: 20px;
 `;
 
 const _CommentInputWrapper = styled.div`
