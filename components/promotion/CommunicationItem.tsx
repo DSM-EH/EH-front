@@ -99,7 +99,7 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
       .catch((err: unknown) => {
         console.error(err);
       });
-  }, [comment]);
+  }, [commentState]);
 
   return (
     <_Wrapper>
