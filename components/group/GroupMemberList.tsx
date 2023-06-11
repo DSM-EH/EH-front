@@ -2,34 +2,63 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Members } from '@/utils/constants/member/member';
 import GroupMember from './GroupMember';
+import { useEffect } from 'react';
+import { getMembers } from '@/apis/getMembers';
+import GroupMemberModal from '../common/modal/GroupMemberModal';
 
 interface PropsType {
   title: string;
 }
 
 interface MemberInformationType {
-  name: string;
-  profileImageUrl: string;
+  id: number;
+  email: string;
+  password: string;
+  nickname: string;
+  description: string;
+  profile_image_url: string;
 }
 
 const GroupMemberList = ({ title }: PropsType) => {
-  const [memberInformation, setMemberInformation] = useState<MemberInformationType>({
-    name: '',
-    profileImageUrl: '',
+  const [memberInformation, setMemberInformation] = useState<MemberInformationType[]>([]);
+  const [showMember, setShowMember] = useState<MemberInformationType>({
+    id: -1,
+    email: '',
+    password: '',
+    nickname: '',
+    description: '',
+    profile_image_url: '',
   });
 
-  const onClick = () => {};
+  const onClick = (information: MemberInformationType) => {
+    setShowMember(information);
+  };
+  useEffect(() => {
+    const groupId: string | null = localStorage.getItem('groupId');
+
+    if (!groupId) return;
+
+    getMembers(groupId)
+      .then(res => {
+        console.log(res);
+        setMemberInformation(res.data);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <_Wrapper>
-      <_Title>{title.split('-').join(' ')}</_Title>
+      <_Title>{title}</_Title>
       <_SmallTitle>그룹 멤버 💪🏻</_SmallTitle>
       <_MembersWrapper>
         <_InnerWrapper>
-          {Members.map(member => (
+          {memberInformation.map((member: MemberInformationType) => (
             <GroupMember key={member.id} {...member} onClick={onClick} />
           ))}
         </_InnerWrapper>
+        {showMember.id !== -1 && <GroupMemberModal {...showMember} />}
       </_MembersWrapper>
     </_Wrapper>
   );
@@ -61,5 +90,6 @@ const _MembersWrapper = styled.div`
 const _InnerWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 40%;
+  width: 45%;
+  justify-content: space-between;
 `;
