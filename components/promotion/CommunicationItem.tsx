@@ -141,8 +141,8 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
           />
         </_CommentInputWrapper>
       </_CommentWrapper>
-      {comment.map((element: CommentType, index: number) => {
-        return <Comment isLoading={isLoading} key={index} {...element} />;
+      {comment.map((element: CommentType) => {
+        return <Comment isLoading={isLoading} key={element.id} {...element} />;
       })}
     </_Wrapper>
   );
