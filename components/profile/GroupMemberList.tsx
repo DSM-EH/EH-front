@@ -10,6 +10,7 @@ interface PropsType {
   title: string;
   isLoading: boolean;
   onClick?: () => void;
+  state: boolean;
 }
 
 interface MemberType {
@@ -21,7 +22,7 @@ interface MemberType {
   profile_image_url: string;
 }
 
-const GroupMemberList = ({ title, isLoading, onClick }: PropsType) => {
+const GroupMemberList = ({ title, isLoading, onClick, state }: PropsType) => {
   const [member, setMember] = useState<MemberType[]>([]);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const GroupMemberList = ({ title, isLoading, onClick }: PropsType) => {
         console.error(err);
         customToast('개발자 에러', 'error');
       });
-  }, []);
+  }, [state]);
 
   return (
     <_Wrapper>
@@ -65,7 +66,7 @@ export default GroupMemberList;
 
 const _Wrapper = styled.div`
   width: 340px;
-  height: 430px;
+  min-height: 430px;
   padding: 30px;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.background};

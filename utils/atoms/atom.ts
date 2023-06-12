@@ -22,3 +22,8 @@ export const skeletonAtom: RecoilState<boolean> = atom<boolean>({
   key: 'skeletonAtom',
   default: false,
 });
+
+export const redirectionAtom = atom<boolean>({
+  key: 'redirectionAtom',
+  default: false,
+});

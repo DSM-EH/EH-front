@@ -8,6 +8,8 @@ import Button from '../button';
 import { deleteRequest } from '@/apis/deleteRequest';
 import { customToast } from '@/utils/toast/toast';
 import { acceptRequest } from '@/apis/acceptRequest';
+import { redirectionAtom } from '@/utils/atoms/atom';
+import { useRecoilState } from 'recoil';
 
 interface MemberType {
   description: string;
@@ -18,7 +20,7 @@ interface MemberType {
   profile_image_url: string;
 }
 
-const ApplyModal = () => {
+const ApplyModal = ({ setState }: { setState: (state: boolean) => void }) => {
   const [visible, setVisible] = useState<boolean>(true);
   const [intro, setIntro] = useState<string>('');
   const [member, setMember] = useState<MemberType>({
@@ -30,6 +32,7 @@ const ApplyModal = () => {
     profile_image_url: '',
   });
   const { closeModal } = useModal('Apply');
+  const [redirect, setRedirect] = useRecoilState<boolean>(redirectionAtom);
 
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -52,6 +55,8 @@ const ApplyModal = () => {
         console.log(res);
         closeModal();
         customToast('요청을 거절했습니다.', 'success');
+        setRedirect(true);
+        setState(true);
       })
       .catch((err: unknown) => {
         console.error(err);
@@ -68,6 +73,8 @@ const ApplyModal = () => {
         console.log(res);
         closeModal();
         customToast('요청을 수락했습니다.', 'success');
+        setRedirect(true);
+        setState(true);
       })
       .catch((err: unknown) => {
         console.error(err);

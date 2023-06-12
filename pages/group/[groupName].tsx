@@ -19,15 +19,18 @@ import SupportModal from '@/components/common/modal/Support';
 import { getMembers } from '@/apis/getMembers';
 import Apply from '@/components/member/Apply';
 import ApplyModal from '@/components/common/modal/ApplyModal';
-import { getPostsApi } from '@/apis/getPosts';
+import { redirectionAtom } from '@/utils/atoms/atom';
+import { useRecoilValue } from 'recoil';
 
 const GroupIdPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [state, setState] = useState<boolean>(false);
   const router: NextRouter = useRouter();
   const { groupName } = router.query as { groupName: string };
   const { modal, openModal } = useModal('Support');
   const { modal: isSupportModalOpen } = useModal('Apply');
   const [isMember, setIsMember] = useState<boolean>(false);
+  const redirect = useRecoilValue(redirectionAtom);
   const [group, setGroup] = useState<GetGroupApiType>({
     id: 0,
     title: '',
@@ -93,12 +96,12 @@ const GroupIdPage = () => {
       });
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [redirect]);
 
   return (
     <div>
       {modal.isOpen && <SupportModal />}
-      {isSupportModalOpen.isOpen && <ApplyModal />}
+      {isSupportModalOpen.isOpen && <ApplyModal setState={setState} />}
       <Head>
         <title>{group.title}</title>
       </Head>
@@ -164,8 +167,8 @@ const GroupIdPage = () => {
       </_UpperWrapper>
       <_MainWrapper>
         <div>
-          <GroupMemberList onClick={onShowMemberClick} isLoading={isLoading} title="그룹 멤버 💪🏻" />
-          {isMember && <Apply isLoading={isLoading} />}
+          <GroupMemberList state={state} onClick={onShowMemberClick} isLoading={isLoading} title="그룹 멤버 💪🏻" />
+          {isMember && <Apply state={state} isLoading={isLoading} />}
         </div>
         <PromotionList isLoading={isLoading} />
       </_MainWrapper>
