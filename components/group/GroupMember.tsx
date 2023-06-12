@@ -23,11 +23,12 @@ const GroupMember = (props: MemberInformationType) => {
 export default GroupMember;
 
 const _Wrapper = styled.div`
-  width: 250px;
+  width: 200px;
   height: max-content;
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 const _ProfileImage = styled.img`
