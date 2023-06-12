@@ -16,7 +16,7 @@ interface ProfileType {
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const { modal, openModal } = useModal('Login');
+  const { modal: loginState, openModal } = useModal('Login');
   const [profile, setProfile] = useState<ProfileType>({
     name: '',
     profileImageUrl: '',
@@ -24,25 +24,32 @@ const Header = () => {
 
   useEffect(() => {
     const acccessToken: string = getCookie('accessToken');
+    const email: string | null = localStorage.getItem('email');
 
-    getProfile()
-      .then(res => {
-        const { data } = res;
-        console.log(data)
-        setIsLogin(true);
-        setProfile({
-          name: data.nickname,
-          profileImageUrl: data.profile_image_url,
+    if (!email) {
+      console.log('이메일이 없어요.');
+      return;
+    }
+
+    email &&
+      getProfile()
+        .then(res => {
+          const { data } = res;
+          console.log(data);
+          setIsLogin(true);
+          setProfile({
+            name: data.nickname,
+            profileImageUrl: data.profile_image_url,
+          });
+        })
+        .catch((error: unknown) => {
+          console.error(error);
         });
-      })
-      .catch((error: unknown) => {
-        console.error(error);
-      });
   }, []);
 
   return (
     <Fragment>
-      {modal.isOpen && <LoginModal />}
+      {loginState.isOpen && <LoginModal />}
       <_Wrapper>
         <_LeftWrapper>
           <_LogoImage onClick={() => (window.location.href = '/')} src={Logo} alt="Logo" />
