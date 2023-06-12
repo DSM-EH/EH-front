@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CommunicationItem from './CommunicationItem';
 import { getPostsApi } from '@/apis/getPosts';
 import { customToast } from '@/utils/toast/toast';
