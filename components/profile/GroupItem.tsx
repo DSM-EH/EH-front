@@ -24,7 +24,7 @@ const ProfileGroupItem = ({ title, description, profile_image, max_people }: Gro
         <_Title>{title}</_Title>
         <_InnerWrapper>
           <_Content>{description}</_Content>
-          <_MemberText>{max_people}</_MemberText>
+          <_MemberText>{max_people}명</_MemberText>
         </_InnerWrapper>
       </_InformationWrapper>
     </_Wrapper>
