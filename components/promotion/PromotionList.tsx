@@ -47,8 +47,8 @@ const PromotionList = ({ isLoading }: PropsType) => {
 
   useEffect(() => {
     const groupId = localStorage.getItem('groupId');
-    
-    if(!groupId) return;
+
+    if (!groupId) return;
 
     getPostsApi(groupId)
       .then(res => {
