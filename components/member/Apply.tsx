@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import GroupMemberListItem from '../profile/GroupMemberListItem';
 import { useModal } from '@/hooks/useModal';
+import { useQuery } from 'react-query';
 
 interface MemberType {
   id: number;
@@ -21,10 +22,10 @@ interface MemberType {
 
 interface PropsType {
   isLoading: boolean;
+  state: boolean;
 }
 
-const Apply = ({ isLoading }: PropsType) => {
-  const [member, setMember] = useState<MemberType[]>([]);
+const Apply = ({ isLoading, state }: PropsType) => {
   const { openModal } = useModal('Apply');
 
   const onClick = (id: number) => {
@@ -33,23 +34,22 @@ const Apply = ({ isLoading }: PropsType) => {
     openModal();
   };
 
-  useEffect(() => {
+  const { data: member, refetch } = useQuery<MemberType[]>('applyMembers', async () => {
     const groupId = localStorage.getItem('groupId');
 
     if (!groupId) {
       customToast('잘못된 접근입니다.', 'error');
-      return;
+      return Promise.reject(new Error('잘못된 접근입니다.'));
     }
 
-    getApplyMembers(groupId)
-      .then(res => {
-        console.log(res);
-        setMember(res.data);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }, []);
+    return getApplyMembers(groupId)
+      .then(res => res.data)
+      .catch((err: unknown) => console.error(err));
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [state]);
 
   return (
     <_Wrapper>
@@ -57,12 +57,12 @@ const Apply = ({ isLoading }: PropsType) => {
         <_Title>신청 멤버</_Title>
         <_VectorImage src={Expansion} onClick={() => console.log('test')} alt="vector" />
       </_UpperWrapper>
-      {member.map((item: MemberType) => (
+      {member?.map((item: MemberType) => (
         <GroupMemberListItem
           onClick={() => onClick(item.user.id)}
           key={item.user.id}
           {...item.user}
-          isLoading={false}
+          isLoading={isLoading}
         />
       ))}
     </_Wrapper>
