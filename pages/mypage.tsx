@@ -11,6 +11,7 @@ import { customToast } from '@/utils/toast/toast';
 import { ProfileApiType } from '@/types/profile';
 import { getMyGroup } from '@/apis/getMyGroup';
 import { useModal } from '@/hooks/useModal';
+import ModifyProfile from '@/components/common/modal/ModifyProfile';
 
 const Mypage = () => {
   const [user, setUser] = useState<ProfileApiType>({
@@ -21,7 +22,8 @@ const Mypage = () => {
     description: '',
     profile_image_url: '',
   });
-  const { modal } = useModal('Modify');
+  const { modal: modify } = useModal('Modify');
+  const [state, setState] = useState<number>(0);
 
   useEffect(() => {
     const email: string | null = localStorage.getItem('email');
@@ -39,21 +41,13 @@ const Mypage = () => {
         customToast('잘못된 접근입니다', 'error');
         console.error(err);
       });
-
-    getMyGroup()
-      .then(res => {
-        console.log(res);
-      })
-      .catch((err: unknown) => {
-        customToast('잘못된 접근입니다', 'error');
-        console.error(err);
-      });
-  }, []);
+  }, [state]);
   return (
     <Wrapper>
       <Head>
         <title>EH 마이페이지</title>
       </Head>
+      {modify.isOpen && <ModifyProfile state={state} setState={setState} />}
       <Header />
       <_Wrapper>
         <Profile {...user} />
