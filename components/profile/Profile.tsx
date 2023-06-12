@@ -3,11 +3,11 @@ import { ProfileApiType } from '@/types/profile';
 import Button from '../common/button';
 import { deleteCookie } from '@/utils/cookie/cookie';
 import { useEffect, useState } from 'react';
+import { useModal } from '@/hooks/useModal';
 
 const Profile = ({ id, email, password, nickname, description, profile_image_url }: ProfileApiType) => {
   const [myProfile, setMyProfile] = useState<boolean>(false);
-
-  const onClick = () => {};
+  const { openModal } = useModal('Modify');
 
   const logOutOnClick = () => {
     deleteCookie('access_token');
@@ -18,7 +18,7 @@ const Profile = ({ id, email, password, nickname, description, profile_image_url
   };
 
   useEffect(() => {
-    const myEmail = localStorage.getItem('email');
+    const myEmail: string | null = localStorage.getItem('email');
 
     if (email === myEmail) {
       setMyProfile(true);
@@ -32,7 +32,7 @@ const Profile = ({ id, email, password, nickname, description, profile_image_url
       <_Introduce>{description}</_Introduce>
       {!myProfile && (
         <>
-          <Button onClick={onClick} buttonColor="main01" fontColor="main01">
+          <Button onClick={openModal} buttonColor="main01" fontColor="main01">
             수정
           </Button>
           <Button onClick={logOutOnClick} buttonColor="main01" fontColor="main01" style={{ marginTop: '20px' }}>
