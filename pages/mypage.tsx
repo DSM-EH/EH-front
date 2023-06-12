@@ -10,6 +10,7 @@ import { getUserProfile } from '@/apis/getUserProfile';
 import { customToast } from '@/utils/toast/toast';
 import { ProfileApiType } from '@/types/profile';
 import { getMyGroup } from '@/apis/getMyGroup';
+import { useModal } from '@/hooks/useModal';
 
 const Mypage = () => {
   const [user, setUser] = useState<ProfileApiType>({
@@ -20,6 +21,8 @@ const Mypage = () => {
     description: '',
     profile_image_url: '',
   });
+  const { modal } = useModal('Modify');
+
   useEffect(() => {
     const email: string | null = localStorage.getItem('email');
     if (!email) {
@@ -29,7 +32,7 @@ const Mypage = () => {
 
     getUserProfile(email)
       .then(res => {
-        console.log("유저가 있네");
+        console.log('유저가 있네');
         setUser(res.data);
       })
       .catch((err: unknown) => {
