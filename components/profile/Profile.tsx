@@ -18,7 +18,7 @@ const Profile = ({ id, email, password, nickname, description, profile_image_url
   };
 
   useEffect(() => {
-    const myEmail = localStorage.getItem('email');
+    const myEmail: string | null = localStorage.getItem('email');
 
     if (email === myEmail) {
       setMyProfile(true);
