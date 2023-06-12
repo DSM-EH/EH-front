@@ -160,6 +160,7 @@ const _Image = styled.img`
 
 const _InformationWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const _NameTitle = styled.strong`
