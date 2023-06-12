@@ -21,6 +21,7 @@ interface MemberInformationType {
 
 const GroupMemberList = ({ title }: PropsType) => {
   const [memberInformation, setMemberInformation] = useState<MemberInformationType[]>([]);
+  const [state, setState] = useState<number>(0);
   const [showMember, setShowMember] = useState<MemberInformationType>({
     id: -1,
     email: '',
@@ -34,7 +35,7 @@ const GroupMemberList = ({ title }: PropsType) => {
     setShowMember(information);
   };
   useEffect(() => {
-    const groupId: string | null = localStorage.getItem('groupId');
+    const groupId = localStorage.getItem('groupId');
 
     if (!groupId) return;
 
@@ -46,7 +47,7 @@ const GroupMemberList = ({ title }: PropsType) => {
       .catch((err: unknown) => {
         console.error(err);
       });
-  }, []);
+  }, [state]);
 
   return (
     <_Wrapper>
@@ -58,7 +59,7 @@ const GroupMemberList = ({ title }: PropsType) => {
             <GroupMember key={member.id} {...member} onClick={onClick} />
           ))}
         </_InnerWrapper>
-        {showMember.id !== -1 && <GroupMemberModal {...showMember} />}
+        <GroupMemberModal state={state} setState={setState} {...showMember} />
       </_MembersWrapper>
     </_Wrapper>
   );
@@ -80,6 +81,7 @@ const _Title = styled.p`
 const _SmallTitle = styled.p`
   color: ${({ theme }) => theme.color.black};
   ${({ theme }) => theme.font.title3};
+  margin-bottom: 30px;
 `;
 
 const _MembersWrapper = styled.div`
@@ -88,8 +90,9 @@ const _MembersWrapper = styled.div`
 `;
 
 const _InnerWrapper = styled.div`
+  width: 580px;
   display: flex;
   flex-wrap: wrap;
-  width: 45%;
   justify-content: space-between;
+  align-items: flex-start;
 `;
