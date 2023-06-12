@@ -23,6 +23,12 @@ const SelfLogin = () => {
   };
 
   const onClick = () => {
+    const { email, password } = loginInformation;
+    if (email === '' || password === '') {
+      customToast('입력 정보를 제대로 확인해주세요.', 'error');
+      return;
+    }
+
     postSignIn(loginInformation)
       .then(res => {
         setCookie('access_token', res.data.access_token);
