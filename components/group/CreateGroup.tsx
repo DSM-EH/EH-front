@@ -122,7 +122,14 @@ const CreateGroup = () => {
       })
       .catch((err: unknown) => {
         console.error(err);
-        customToast('개발자 에러', 'error');
+        const prev: string | null = sessionStorage.getItem('prevPath');
+
+        if (!prev) {
+          customToast('잘못된 접근입니다.', 'error');
+          return;
+        }
+
+        window.location.href = prev;
       });
   };
 
@@ -153,7 +160,7 @@ const CreateGroup = () => {
         width={100}
       />
       <_ImageInputWrapper>
-        <_SmallTitle>그룹 이미지</_SmallTitle>
+        <_SmallTitle>그룹 배경 이미지</_SmallTitle>
         <_SelectImageWrapper height={200} onClick={() => ref1.current?.click()}>
           {ShowImage(createGroup.imageUrl, 200, imageState.groupBackgroundImageUrl)}
           <_FileSelector

@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CommunicationItem from './CommunicationItem';
 import { getPostsApi } from '@/apis/getPosts';
 import { customToast } from '@/utils/toast/toast';
-import { useQuery } from 'react-query';
 
 interface PropsType {
   isLoading: boolean;
@@ -33,20 +32,25 @@ interface PostType {
 }
 
 const PromotionList = ({ isLoading }: PropsType) => {
-  const { data: post } = useQuery<PostType[]>('posts', async () => {
-    const groupId: string | null = localStorage.getItem('groupId');
+  const [post, setPost] = useState<PostType[]>([]);
+
+  useEffect(() => {
+    const groupId = localStorage.getItem('groupId');
 
     if (!groupId) {
       customToast('잘못된 접근입니다.', 'error');
-      return Promise.reject(new Error('잘못된 접근입니다.'));
+      return;
     }
 
-    return getPostsApi(groupId).then(res => res.data);
-  });
-
-  useEffect(() => {
-    if (!post) return;
-    console.log(post);
+    getPostsApi(groupId)
+      .then(res => {
+        console.log(res);
+        setPost(res.data);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+        customToast('개발자 잘못', 'error');
+      });
   }, [post]);
 
   return (

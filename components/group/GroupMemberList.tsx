@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Members } from '@/utils/constants/member/member';
 import GroupMember from './GroupMember';
 import { useEffect } from 'react';
 import { getMembers } from '@/apis/getMembers';
@@ -59,7 +58,7 @@ const GroupMemberList = ({ title }: PropsType) => {
             <GroupMember key={member.id} {...member} onClick={onClick} />
           ))}
         </_InnerWrapper>
-        <GroupMemberModal state={state} setState={setState} {...showMember} />
+        <GroupMemberModal state={state} setState={setState} setShowMember={setShowMember} {...showMember} />
       </_MembersWrapper>
     </_Wrapper>
   );

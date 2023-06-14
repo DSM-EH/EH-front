@@ -4,6 +4,15 @@ import { customToast } from '@/utils/toast/toast';
 import { deleteRequest } from '@/apis/deleteRequest';
 import { useEffect } from 'react';
 
+interface MemberType {
+  id: number;
+  email: string;
+  password: string;
+  nickname: string;
+  description: string;
+  profile_image_url: string;
+}
+
 interface MemberInformationType {
   id: number;
   email: string;
@@ -13,6 +22,7 @@ interface MemberInformationType {
   profile_image_url: string;
   state: number;
   setState: (state: number) => void;
+  setShowMember: (showMember: MemberType) => void;
 }
 
 const GroupMemberModal = ({
@@ -23,6 +33,7 @@ const GroupMemberModal = ({
   profile_image_url,
   state,
   setState,
+  setShowMember,
 }: MemberInformationType) => {
   const deleteUser = () => {
     const confirmData: boolean = confirm('정말로 추방하시겠습니까?');
@@ -38,6 +49,14 @@ const GroupMemberModal = ({
         console.log(res);
         setState(state + 1);
         customToast('추방이 완료되었습니다.', 'success');
+        setShowMember({
+          id: -1,
+          email: '',
+          password: '',
+          nickname: '',
+          description: '',
+          profile_image_url: '',
+        });
       })
       .catch((err: unknown) => {
         console.error(err);
