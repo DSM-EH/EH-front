@@ -145,8 +145,8 @@ const GroupIdPage = () => {
             </>
           ) : isMember ? (
             <>
-              <_Button onClick={writeOnClick} buttonColor="main01" fontColor="main01">
-                글쓰기
+              <_Button buttonColor="main01" fontColor="main01">
+                지원완료
               </_Button>
               <_Button onClick={copyClipBoardOnClick} buttonColor="main01" fontColor="main01">
                 링크복사

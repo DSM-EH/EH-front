@@ -70,11 +70,7 @@ const CommunicationItem = ({
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      const postId = localStorage.getItem('groupId');
-
-      if (!postId) return;
-
-      createComment(userId, postId, commentState)
+      createComment(userId, postId.toString(), commentState)
         .then(res => {
           console.log(res);
           customToast('댓글 작성 성공!', 'success');
