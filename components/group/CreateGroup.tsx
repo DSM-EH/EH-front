@@ -110,7 +110,7 @@ const CreateGroup = () => {
       max_people: createGroup.member,
     })
       .then(res => {
-        const prev: string | null = sessionStorage.getItem('prevPath');
+        const prev: string = document.referrer;
 
         if (!prev) {
           customToast('잘못된 접근입니다.', 'error');
@@ -122,7 +122,8 @@ const CreateGroup = () => {
       })
       .catch((err: unknown) => {
         console.error(err);
-        const prev: string | null = sessionStorage.getItem('prevPath');
+
+        const prev: string = document.referrer;
 
         if (!prev) {
           customToast('잘못된 접근입니다.', 'error');

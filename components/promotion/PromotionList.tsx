@@ -56,7 +56,7 @@ const PromotionList = ({ isLoading }: PropsType) => {
   return (
     <_Wrapper>
       {post?.map((element: PostType) => (
-        <CommunicationItem isLoading={isLoading} key={element.id} {...element} />
+        <CommunicationItem postId={element.id} isLoading={isLoading} key={element.id} {...element} />
       ))}
     </_Wrapper>
   );

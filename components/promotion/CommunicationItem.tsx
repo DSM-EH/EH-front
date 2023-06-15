@@ -30,6 +30,7 @@ interface PropsType {
     profile_image_url: string;
   };
   isLoading: boolean;
+  postId: number;
 }
 
 interface CommentType {
@@ -45,7 +46,17 @@ interface CommentType {
   };
 }
 
-const CommunicationItem = ({ content, created_at, group, id, is_promotion, title, writer, isLoading }: PropsType) => {
+const CommunicationItem = ({
+  content,
+  created_at,
+  group,
+  id,
+  is_promotion,
+  title,
+  writer,
+  isLoading,
+  postId,
+}: PropsType) => {
   const [comment, setComment] = useState<CommentType[]>([]);
   const [commentState, setCommentState] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
@@ -91,7 +102,7 @@ const CommunicationItem = ({ content, created_at, group, id, is_promotion, title
         console.error(err);
       });
 
-    getComment(groupId)
+    getComment(id.toString())
       .then(res => {
         console.log('data', res.data);
         setComment(res.data);
