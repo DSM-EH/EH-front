@@ -51,7 +51,7 @@ const PromotionList = ({ isLoading }: PropsType) => {
         console.error(err);
         customToast('개발자 잘못', 'error');
       });
-  }, [post]);
+  }, []);
 
   return (
     <_Wrapper>
