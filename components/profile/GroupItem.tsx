@@ -12,8 +12,9 @@ interface GroupType {
   set_time: string;
 }
 
-const ProfileGroupItem = ({ title, description, profile_image, max_people }: GroupType) => {
+const ProfileGroupItem = ({ id, title, description, profile_image, max_people }: GroupType) => {
   const onClick = () => {
+    localStorage.setItem('groupId', id.toString());
     window.location.href = `/group/${title}`;
   };
 
