@@ -130,7 +130,7 @@ const CreateGroup = () => {
           return;
         }
 
-        window.location.href = prev;
+        window.location.href = '/group';
       });
   };
 
