@@ -15,6 +15,7 @@ const TextField = ({
   width,
   height,
   pattern,
+  onKeyPress,
 }: TextFieldType) => {
   const [inputClick, setInputClick] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
@@ -34,6 +35,7 @@ const TextField = ({
           autoComplete="off"
           onFocus={() => setInputClick(true)}
           onBlur={() => setInputClick(value ? true : false)}
+          onKeyPress={onKeyPress}
         />
       </_InputWrapper>
       {error && <_ErrorText>{errorMsg}</_ErrorText>}

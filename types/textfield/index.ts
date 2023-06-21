@@ -12,4 +12,5 @@ export interface TextFieldType {
   width?: number;
   height?: number;
   pattern?: string;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
