@@ -18,7 +18,7 @@ yarn
 
 - Getting Start
 ```shell
-yarn
+yarn dev
 ```
 
 ### Using Skills
